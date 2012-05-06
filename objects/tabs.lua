@@ -38,7 +38,7 @@ end
 function tabs:update(dt)
 	
 	local x, y = love.mouse.getPosition()
-		local tabheight = self.tabheight
+	local tabheight = self.tabheight
 	local padding = self.padding
 	local autosize = self.autosize
 	local tabheight = self.tabheight
@@ -160,6 +160,9 @@ function tabs:mousepressed(x, y, button)
 			
 		if col == true and visible == true then
 			self.offsetx = self.offsetx + 5
+			if self.offsetx > 0 then
+				self.offsetx = 0
+			end
 		end
 			
 	end
@@ -172,6 +175,10 @@ function tabs:mousepressed(x, y, button)
 			
 		if col == true and visible == true then
 			self.offsetx = self.offsetx - 5
+			local bwidth = self:GetWidthOfButtons()
+			if (self.offsetx + bwidth) < self.width then
+				self.offsetx = bwidth - self.width
+			end
 		end
 			
 	end
