@@ -71,7 +71,9 @@ function sliderbutton:update(dt)
 	
 	if nvalue ~= pvalue then
 		self.parent.value = loveframes.util.Round(nvalue, self.parent.decimals)
-		self.parent.OnValueChanged(self.parent, self.parent.value)
+		if self.parent.OnValueChanged then
+			self.parent.OnValueChanged(self.parent, self.parent.value)
+		end
 	end
 	
 	if self.Update then

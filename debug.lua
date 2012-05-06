@@ -280,9 +280,6 @@ function loveframes.debug.ExamplesMenu()
 		list1:AddColumn("Column 2")
 		list1:AddColumn("Column 3")
 		list1:AddColumn("Column 4")
-		list1.OnRowClicked = function(parent, row, rowdata)
-			print(unpack(rowdata))
-		end
 		
 		for i=1, 20 do
 			list1:AddRow("Row " ..i.. ", column 1", "Row " ..i.. ", column 2", "Row " ..i.. ", column 3", "Row " ..i.. ", column 4")

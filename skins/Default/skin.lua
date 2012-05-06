@@ -1166,15 +1166,6 @@ function skin.DrawColumnListRow(object)
 	
 	end
 	
-	local cwidth, cheight = self:GetParent():GetParent():GetColumnSize()
-	local x = 5
-	
-	for k, v in ipairs(self.columndata) do
-		local height = self.font:getHeight("a")
-		love.graphics.print(v, self.x + x, self.y + self.height/2 - height/2)
-		x = x + cwidth
-	end
-	
 end
 
 -- register the skin
