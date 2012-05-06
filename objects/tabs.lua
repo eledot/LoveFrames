@@ -138,14 +138,42 @@ function tabs:mousepressed(x, y, button)
 		return
 	end
 	
-	if self.hover == true and button == "l" then
-		
-		local baseparent = self:GetBaseParent()
+	if self.hover == true then
 	
-		if baseparent and baseparent.type == "frame" then
-			baseparent:MakeTop()
+		if button == "l" then
+		
+			local baseparent = self:GetBaseParent()
+		
+			if baseparent and baseparent.type == "frame" then
+				baseparent:MakeTop()
+			end
+			
 		end
 		
+	end
+	
+	if button == "wu" then
+		
+		local buttonheight = self:GetHeightOfButtons()
+		local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, buttonheight, 1)
+		local visible = self.internals[#self.internals - 1]:GetVisible()
+			
+		if col == true and visible == true then
+			self.offsetx = self.offsetx + 5
+		end
+			
+	end
+		
+	if button == "wd" then
+		
+		local buttonheight = self:GetHeightOfButtons()
+		local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, buttonheight, 1)
+		local visible = self.internals[#self.internals]:GetVisible()
+			
+		if col == true and visible == true then
+			self.offsetx = self.offsetx - 5
+		end
+			
 	end
 	
 	for k, v in ipairs(self.internals) do

@@ -6,6 +6,20 @@
 -- util library
 loveframes.util = {}
 
+--[[---------------------------------------------------------
+	- func: SetActiveSkin(name)
+	- desc: sets the active skin
+--]]---------------------------------------------------------
+function loveframes.util.SetActiveSkin(name)
+	
+	loveframes.config["ACTIVESKIN"] = name
+
+end
+
+--[[---------------------------------------------------------
+	- func: GetActiveSkin()
+	- desc: gets the active skin
+--]]---------------------------------------------------------
 function loveframes.util.GetActiveSkin()
 	
 	local index = loveframes.config["ACTIVESKIN"]
