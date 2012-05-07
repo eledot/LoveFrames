@@ -335,16 +335,16 @@ function list:RedoLayout()
 				
 				if vbar == true then
 					if v.width + padding > (self.width - self.internals[1].width) then
-						v:SetWidth((self.width - self.internals[1].width) - padding*2)
+						v:SetWidth((self.width - self.internals[1].width) - (padding*2))
 					end
 					if v.retainsize == false then
-						v:SetWidth((self.width - self.internals[1].width) - padding*2)
+						v:SetWidth((self.width - self.internals[1].width) - (padding*2))
 					end
 					self.internals[1].staticx = self.width - self.internals[1].width
 					self.internals[1].height = self.height
 				else
 					if v.retainsize == false then
-						v:SetWidth(self.width - padding*2)
+						v:SetWidth(self.width - (padding*2))
 					end
 				end
 				
@@ -358,16 +358,16 @@ function list:RedoLayout()
 				
 				if hbar == true then
 					if v.height + padding > (self.height - self.internals[1].height) then
-						v:SetHeight((self.height - self.internals[1].height) - padding*2)
+						v:SetHeight((self.height - self.internals[1].height) - (padding*2))
 					end
 					if v.retainsize == false then
-						v:SetHeight((self.height - self.internals[1].height) - padding*2)
+						v:SetHeight((self.height - self.internals[1].height) - (padding*2))
 					end
 					self.internals[1].staticy = self.height - self.internals[1].height
 					self.internals[1].width = self.width
 				else
 					if v.retainsize == false then
-						v:SetHeight(self.height - padding*2)
+						v:SetHeight(self.height - (padding*2))
 					end
 				end
 				

@@ -20,8 +20,8 @@ function text:initialize()
 	self.type			= "text"
 	self.text 			= ""
 	self.font			= love.graphics.newFont(12)
-	self.width			= 0
-	self.height			= 0
+	self.width			= 5
+	self.height			= 5
 	self.maxw			= 0
 	self.lines			= 1
 	self.text			= {}
