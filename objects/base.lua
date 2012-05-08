@@ -57,8 +57,18 @@ end
 --]]---------------------------------------------------------
 function base:mousepressed(x, y, button)
 
+	if self.visible == false then
+		return
+	end
+	
 	if self.children then
 		for k, v in ipairs(self.children) do
+			v:mousepressed(x, y, button)
+		end
+	end
+	
+	if self.internals then
+		for k, v in ipairs(self.internals) do
 			v:mousepressed(x, y, button)
 		end
 	end
@@ -71,8 +81,18 @@ end
 --]]---------------------------------------------------------
 function base:mousereleased(x, y, button)
 
+	if self.visible == false then
+		return
+	end
+	
 	if self.children then
 		for k, v in ipairs(self.children) do
+			v:mousereleased(x, y, button)
+		end
+	end
+	
+	if self.internals then
+		for k, v in ipairs(self.internals) do
 			v:mousereleased(x, y, button)
 		end
 	end
@@ -85,8 +105,18 @@ end
 --]]---------------------------------------------------------
 function base:keypressed(key, unicode)
 
+	if self.visible == false then
+		return
+	end
+	
 	if self.children then
 		for k, v in ipairs(self.children) do
+			v:keypressed(key, unicode)
+		end
+	end
+	
+	if self.internals then
+		for k, v in ipairs(self.internals) do
 			v:keypressed(key, unicode)
 		end
 	end
@@ -99,8 +129,18 @@ end
 --]]---------------------------------------------------------
 function base:keyreleased(key)
 
+	if self.visible == false then
+		return
+	end
+	
 	if self.children then
 		for k, v in ipairs(self.children) do
+			v:keyreleased(key)
+		end
+	end
+	
+	if self.internals then
+		for k, v in ipairs(self.internals) do
 			v:keyreleased(key)
 		end
 	end

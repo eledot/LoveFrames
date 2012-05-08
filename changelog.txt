@@ -1,0 +1,27 @@
+================================================
+Version 0.9.1 - Alpha (May 8 - 2012)
+================================================
+[ADDED] a new object: image button
+[ADDED] a new skin: Orange
+[ADDED] a new column list row method: SetTextPos(x, y)
+[ADDED] a new column list row method: SetFont(font)
+[ADDED] a new column list row method: GetFont()
+[ADDED] a new column list row method: GetColorIndex()
+[ADDED] a new column list row method: SetTextColor(color)
+[ADDED] a new debug function: SkinSelector()
+[ADDED] license.txt
+[ADDED] changelog.txt
+
+[CHANGED] the name of the default skin to Blue
+[CHANGED] the drawing system of the image object, the image object will now draw it's image from it's skin function instead of it's internal drawing function
+[CHANGED] argument type for adding an image to a tab in tabs:AddTab(), the image argument can now be either an image object or a string containg the path to an image
+[CHANGED] the look of the debug overlay
+[CHANGED] some of the code within the default skins to improve performance (as suggested by kikito)
+
+[REMOVED] license.html
+[REMOVED] loveframes.graphics and graphics.lua
+
+================================================
+Version 0.9 - Alpha (May 5 - 2012)
+================================================
+Initial commit

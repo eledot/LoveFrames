@@ -143,20 +143,3 @@ function columnlistheader:mousereleased(x, y, button)
 	self.down = false
 	
 end
-
---[[---------------------------------------------------------
-	- func: keypressed(key)
-	- desc: called when the player presses a key
---]]---------------------------------------------------------
-function columnlistheader:keypressed(key, unicode)
-
-end
-
---[[---------------------------------------------------------
-	- func: keyreleased(key)
-	- desc: called when the player releases a key
---]]---------------------------------------------------------
-function columnlistheader:keyreleased(key)
-
-
-end

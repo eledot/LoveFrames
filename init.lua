@@ -9,16 +9,16 @@ loveframes = {}
 -- library info
 loveframes.info = {}
 loveframes.info.author = "Nikolai Resokav"
-loveframes.info.version = "0.9"
+loveframes.info.version = "0.9.1"
 loveframes.info.stage = "Alpha"
 
 -- library configurations
 loveframes.config = {}
 loveframes.config["DIRECTORY"] 			= "libraries/loveframes"
-loveframes.config["DEFAULTSKIN"]		= "Default"
-loveframes.config["ACTIVESKIN"]	   		= "Default"
+loveframes.config["DEFAULTSKIN"]		= "Blue"
+loveframes.config["ACTIVESKIN"]	   		= "Blue"
 loveframes.config["INDEXSKINIMAGES"]	= true
-loveframes.config["DEBUG"]				= false
+loveframes.config["DEBUG"]				= true
 
 -- drawcount
 loveframes.drawcount = 0

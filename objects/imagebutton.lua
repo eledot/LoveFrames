@@ -3,24 +3,25 @@
 	-- By Nikolai Resokav --
 --]]------------------------------------------------
 
--- button clas
-button = class("button", base)
-button:include(loveframes.templates.default)
+-- imagebutton clas
+imagebutton = class("imagebutton", base)
+imagebutton:include(loveframes.templates.default)
 
 --[[---------------------------------------------------------
 	- func: initialize()
 	- desc: initializes the object
 --]]---------------------------------------------------------
-function button:initialize()
+function imagebutton:initialize()
 
-	self.type			= "button"
-	self.text 			= "Button"
-	self.width 			= 80
-	self.height 		= 25
+	self.type			= "imagebutton"
+	self.text 			= "Image Button"
+	self.width 			= 50
+	self.height 		= 50
 	self.internal		= false
 	self.down			= false
 	self.clickable		= true
 	self.enabled		= true
+	self.image			= nil
 	self.OnClick		= nil
 	
 end
@@ -29,7 +30,7 @@ end
 	- func: update(deltatime)
 	- desc: updates the object
 --]]---------------------------------------------------------
-function button:update(dt)
+function imagebutton:update(dt)
 	
 	if self.visible == false then
 		if self.alwaysupdate == false then
@@ -55,7 +56,7 @@ end
 	- func: draw()
 	- desc: draws the object
 --]]---------------------------------------------------------
-function button:draw()
+function imagebutton:draw()
 	
 	if self.visible == false then
 		return
@@ -73,22 +74,22 @@ function button:draw()
 	if self.Draw ~= nil then
 		self.Draw(self)
 	else
-		skin.DrawButton(self)
+		skin.DrawImageButton(self)
 	end
 	
 end
 
 --[[---------------------------------------------------------
-	- func: mousepressed(x, y, button)
-	- desc: called when the player presses a mouse button
+	- func: mousepressed(x, y, imagebutton)
+	- desc: called when the player presses a mouse imagebutton
 --]]---------------------------------------------------------
-function button:mousepressed(x, y, button)
+function imagebutton:mousepressed(x, y, imagebutton)
 
 	if self.visible == false then
 		return
 	end
 	
-	if self.hover == true and button == "l" then
+	if self.hover == true and imagebutton == "l" then
 		
 		local baseparent = self:GetBaseParent()
 	
@@ -103,10 +104,10 @@ function button:mousepressed(x, y, button)
 end
 
 --[[---------------------------------------------------------
-	- func: mousereleased(x, y, button)
-	- desc: called when the player releases a mouse button
+	- func: mousereleased(x, y, imagebutton)
+	- desc: called when the player releases a mouse imagebutton
 --]]---------------------------------------------------------
-function button:mousereleased(x, y, button)
+function imagebutton:mousereleased(x, y, imagebutton)
 	
 	if self.visible == false then
 		return
@@ -117,7 +118,7 @@ function button:mousereleased(x, y, button)
 	local clickable = self.clickable
 	local enabled = self.enabled
 	
-	if hover == true and down == true and button == "l" and clickable == true then
+	if hover == true and down == true and imagebutton == "l" and clickable == true then
 		if enabled == true then
 			if self.OnClick then
 				self.OnClick(self, x, y)
@@ -133,7 +134,7 @@ end
 	- func: SetText(text)
 	- desc: sets the object's text
 --]]---------------------------------------------------------
-function button:SetText(text)
+function imagebutton:SetText(text)
 
 	self.text = text
 	
@@ -143,7 +144,7 @@ end
 	- func: GetText()
 	- desc: gets the object's text
 --]]---------------------------------------------------------
-function button:GetText()
+function imagebutton:GetText()
 
 	return self.text
 	
@@ -153,7 +154,7 @@ end
 	- func: SetClickable(bool)
 	- desc: sets whether the object can be clicked or not
 --]]---------------------------------------------------------
-function button:SetClickable(bool)
+function imagebutton:SetClickable(bool)
 
 	self.clickable = bool
 	
@@ -163,7 +164,7 @@ end
 	- func: GetClickable(bool)
 	- desc: gets whether the object can be clicked or not
 --]]---------------------------------------------------------
-function button:GetClickable()
+function imagebutton:GetClickable()
 
 	return self.clickable
 	
@@ -173,7 +174,7 @@ end
 	- func: SetClickable(bool)
 	- desc: sets whether the object is enabled or not
 --]]---------------------------------------------------------
-function button:SetEnabled(bool)
+function imagebutton:SetEnabled(bool)
 
 	self.enabled = bool
 	
@@ -183,8 +184,45 @@ end
 	- func: GetEnabled()
 	- desc: gets whether the object is enabled or not
 --]]---------------------------------------------------------
-function button:GetEnabled()
+function imagebutton:GetEnabled()
 
 	return self.enabled
 	
+end
+
+--[[---------------------------------------------------------
+	- func: SetImage(image)
+	- desc: sets the object's image
+--]]---------------------------------------------------------
+function imagebutton:SetImage(image)
+
+	if type(image) == "string" then
+		self.image = love.graphics.newImage(image)
+	else
+		self.image = image
+	end
+
+end
+
+--[[---------------------------------------------------------
+	- func: GetImage()
+	- desc: gets whether the object is enabled or not
+--]]---------------------------------------------------------
+function imagebutton:GetImage()
+
+	return self.image
+
+end
+
+--[[---------------------------------------------------------
+	- func: SizeToImage()
+	- desc: makes the object the same size as it's image
+--]]---------------------------------------------------------
+function imagebutton:SizeToImage()
+
+	if self.image then
+		self.width = self.image:getWidth()
+		self.height = self.image:getHeight()
+	end
+
 end

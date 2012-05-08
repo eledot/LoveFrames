@@ -71,17 +71,6 @@ function image:draw()
 		skin.DrawImage(self)
 	end
 	
-	local image = self.image
-	local color = self.imagecolor
-	
-	if color then
-		love.graphics.setColor(unpack(color))
-		love.graphics.draw(image)
-	else
-		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.draw(image, self.x, self.y)
-	end
-	
 end
 
 --[[---------------------------------------------------------

@@ -36,125 +36,58 @@ function loveframes.debug.draw()
 	
 	-- font for debug text
 	love.graphics.setFont(font)
-	love.graphics.setLine(1, "smooth")
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Library Information", 6, 6)
+	love.graphics.setColor(0, 0, 0, 150)
+	love.graphics.rectangle("fill", 5, 5, 200, 250)
+	
+	love.graphics.setColor(0, 0, 0, 50)
+	love.graphics.rectangle("fill", 10, 10, 190, 20)
 	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.print("Library Information", 5, 5)
+	love.graphics.print("Library Information", 15, 15)
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.line(6, 21, 190, 21)
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.line(5, 20, 190, 20)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Author: " ..loveframes.info.author, 6, 26)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Author: " ..loveframes.info.author, 5, 25)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Version: " ..loveframes.info.version, 6, 36)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Version: " ..loveframes.info.version, 5, 35)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Stage: " ..loveframes.info.stage, 6, 46)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Stage: " ..loveframes.info.stage, 5, 45)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Base Directory: " ..loveframes.config["DIRECTORY"], 6, 56)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Base Directory: " ..loveframes.config["DIRECTORY"], 5, 55)
+	love.graphics.print("Author: " ..loveframes.info.author, 15, 30)
+	love.graphics.print("Version: " ..loveframes.info.version, 15, 40)
+	love.graphics.print("Stage: " ..loveframes.info.stage, 15, 50)
+	love.graphics.print("Base Directory: " ..loveframes.config["DIRECTORY"], 15, 60)
 	
 	-- object information box
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Object Information", 6, 81)
+	love.graphics.setColor(0, 0, 0, 50)
+	love.graphics.rectangle("fill", 10, 80, 190, 20)
 	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.print("Object Information", 5, 80)
+	love.graphics.print("Object Information", 15, 85)
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.line(6, 96, 190, 96)
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.line(5, 95, 190, 95)
 	
 	if numcols > 0 then
-		love.graphics.setColor(0, 0, 0, 255)
-		love.graphics.print("Type: " ..topcol.type, 6, 101)
-		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.print("Type: " ..topcol.type, 5, 100)
+		love.graphics.print("Type: " ..topcol.type, 15, 100)
 	else
-		love.graphics.setColor(0, 0, 0, 255)
-		love.graphics.print("Type: none", 6, 101)
-		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.print("Type: none", 5, 100)
+		love.graphics.print("Type: none", 10, 100)
 	end
 	
 	if topcol.children then
-		love.graphics.setColor(0, 0, 0, 255)
-		love.graphics.print("# of children: " .. #topcol.children, 6, 111)
-		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.print("# of children: " .. #topcol.children, 5, 110)
+		love.graphics.print("# of children: " .. #topcol.children, 15, 110)
 	else
-		love.graphics.setColor(0, 0, 0, 255)
-		love.graphics.print("# of children: 0", 6, 111)
-		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.print("# of children: 0", 5, 110)
+		love.graphics.print("# of children: 0", 15, 110)
 	end
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("X: " ..topcol.x, 6, 121)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("X: " ..topcol.x, 5, 120)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Y: " ..topcol.y, 6, 131)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Y: " ..topcol.y, 5, 130)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Width: " ..topcol.width, 6, 141)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Width: " ..topcol.width, 5, 140)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Height: " ..topcol.height, 6, 151)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Height: " ..topcol.height, 5, 150)
+	love.graphics.print("X: " ..topcol.x, 15, 120)
+	love.graphics.print("Y: " ..topcol.y, 15, 130)
+	love.graphics.print("Width: " ..topcol.width, 15, 140)
+	love.graphics.print("Height: " ..topcol.height, 15, 150)
 	
 	-- Miscellaneous box
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Miscellaneous: ", 6, 191)
+	love.graphics.setColor(0, 0, 0, 50)
+	love.graphics.rectangle("fill", 10, 190, 190, 20)
 	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.print("Miscellaneous", 5, 190)
+	love.graphics.print("Miscellaneous", 15, 195)
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.line(6, 206, 190, 206)
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.line(5, 205, 190, 205)
 	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("LOVE Version: " ..love._version, 6, 211)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("LOVE Version: " ..love._version, 5, 210)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("FPS: " ..love.timer.getFPS(), 6, 221)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("FPS: " ..love.timer.getFPS(), 5, 220)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Delta Time: " ..love.timer.getDelta(), 6, 231)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Delta Time: " ..love.timer.getDelta(), 5, 230)
-	
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.print("Total Objects: " ..#objects, 6, 241)
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("Total Objects: " ..#objects, 5, 240)
+	love.graphics.print("LOVE Version: " ..love._version, 15, 210)
+	love.graphics.print("FPS: " ..love.timer.getFPS(), 15, 220)
+	love.graphics.print("Delta Time: " ..love.timer.getDelta(), 15, 230)
+	love.graphics.print("Total Objects: " ..#objects, 15, 240)
 	
 	-- outline the object that the mouse is hovering over
 	love.graphics.setColor(255, 204, 51, 255)
@@ -170,8 +103,8 @@ function loveframes.debug.ExamplesMenu()
 	------------------------------------
 	local examplesframe = loveframes.Create("frame")
 	examplesframe:SetName("Examples List")
-	examplesframe:SetSize(200, love.graphics.getHeight() - 265)
-	examplesframe:SetPos(5, 260)
+	examplesframe:SetSize(200, love.graphics.getHeight() - 330)
+	examplesframe:SetPos(5, 325)
 	
 	------------------------------------
 	-- examples list
@@ -221,6 +154,7 @@ function loveframes.debug.ExamplesMenu()
 		local frame1 = loveframes.Create("frame")
 		frame1:SetName("Checkbox")
 		frame1:Center()
+		frame1:SetHeight(85)
 		
 		local checkbox1 = loveframes.Create("checkbox", frame1)
 		checkbox1:SetText("Checkbox 1")
@@ -251,6 +185,7 @@ function loveframes.debug.ExamplesMenu()
 		frame1:Center()
 		
 		local panel1 = loveframes.Create("panel")
+		panel1:SetHeight(230)
 			
 		local collapsiblecategory1 = loveframes.Create("collapsiblecategory", frame1)
 		collapsiblecategory1:SetPos(5, 30)
@@ -326,6 +261,26 @@ function loveframes.debug.ExamplesMenu()
 		
 	end
 	exampleslist:AddItem(imageexample)
+	
+	------------------------------------
+	-- image button example
+	------------------------------------
+	local imagebuttonexample = loveframes.Create("button")
+	imagebuttonexample:SetText("Image Button")
+	imagebuttonexample.OnClick = function(object1, x, y)
+	
+		local frame1 = loveframes.Create("frame")
+		frame1:SetName("Image Button")
+		frame1:SetSize(138, 163)
+		frame1:Center()
+		
+		local imagebutton1 = loveframes.Create("imagebutton", frame1)
+		imagebutton1:SetImage("resources/images/carlsagan.png")
+		imagebutton1:SetPos(5, 30)
+		imagebutton1:SizeToImage()
+		
+	end
+	exampleslist:AddItem(imagebuttonexample)
 	
 	------------------------------------
 	-- list example
@@ -486,12 +441,12 @@ function loveframes.debug.ExamplesMenu()
 	
 		local frame1 = loveframes.Create("frame")
 		frame1:SetName("Slider")
-		frame1:SetSize(300, 100)
+		frame1:SetSize(300, 70)
 		frame1:Center()
 		
 		local slider1 = loveframes.Create("slider", frame1)
 		slider1:SetPos(5, 30)
-		slider1:SetSize(290, 500)
+		slider1:SetWidth(290)
 		slider1:SetMinMax(0, 100)
 		
 	end
@@ -513,10 +468,22 @@ function loveframes.debug.ExamplesMenu()
 		tabs1:SetPos(5, 30)
 		tabs1:SetSize(490, 265)
 		
+		local images = {"accept.png", "add.png", "application.png", "building.png", "bin.png", "database.png", "box.png", "brick.png"}
+		
 		for i=1, 20 do
-			local text1 = loveframes.Create("text")
+		
+			local panel1 = loveframes.Create("panel")
+			panel1.Draw = function()
+			end
+			
+			local text1 = loveframes.Create("text", panel1)
 			text1:SetText("Tab " ..i)
-			tabs1:AddTab("Tab " ..i, text1, "Tab " ..i)
+			tabs1:AddTab("Tab " ..i, panel1, "Tab " ..i, "resources/images/" ..images[math.random(1, #images)])
+			text1:SetAlwaysUpdate(true)
+			text1.Update = function(object, dt)
+				object:Center()
+			end
+			
 		end
 		
 	end
@@ -540,10 +507,9 @@ function loveframes.debug.ExamplesMenu()
 		list1:SetPadding(5)
 		list1:SetSpacing(5)
 		
-		for i=1, 20 do
+		for i=1, 5 do
 			local text1 = loveframes.Create("text")
 			text1:SetText(loremipsum)
-			--text1:SetColor({math.random(1, 255), math.random(1, 255), math.random(1, 255), 255})
 			list1:AddItem(text1)
 		end
 		
@@ -569,4 +535,27 @@ function loveframes.debug.ExamplesMenu()
 	end
 	exampleslist:AddItem(textinputexample)
 		
+end
+
+function loveframes.debug.SkinSelector()
+
+	local skins = loveframes.skins.available
+	
+	local frame = loveframes.Create("frame")
+	frame:SetName("Skin Selector")
+	frame:SetSize(200, 60)
+	frame:SetPos(5, 260)
+	
+	local skinslist = loveframes.Create("multichoice", frame)
+	skinslist:SetPos(5, 30)
+	skinslist:SetWidth(190)
+	skinslist:SetChoice("Choose a skin")
+	skinslist.OnChoiceSelected = function(object, choice)
+		loveframes.util.SetActiveSkin(choice)
+	end
+	
+	for k, v in pairs(skins) do
+		skinslist:AddChoice(v.name)
+	end
+	
 end

@@ -17,8 +17,11 @@ function columnlistrow:initialize(parent, data)
 	self.parent			= parent
 	self.colorindex		= self.parent.rowcolorindex
 	self.font			= love.graphics.newFont(12)
+	self.textcolor		= {0, 0, 0, 255}
 	self.width 			= 80
 	self.height 		= 25
+	self.textx			= 5
+	self.texty			= 5
 	self.internal		= true
 	self.columndata 	= data
 	
@@ -76,11 +79,12 @@ function columnlistrow:draw()
 	end
 
 	local cwidth, cheight = self:GetParent():GetParent():GetColumnSize()
-	local x = 5
+	local x = self.textx
+	local textcolor = self.textcolor
 	
 	for k, v in ipairs(self.columndata) do
-		local height = self.font:getHeight("a")
-		love.graphics.print(v, self.x + x, self.y + self.height/2 - height/2)
+		love.graphics.setColor(unpack(textcolor))
+		love.graphics.print(v, self.x + x, self.y + self.texty)
 		x = x + cwidth
 	end
 	
@@ -132,25 +136,52 @@ function columnlistrow:mousereleased(x, y, button)
 end
 
 --[[---------------------------------------------------------
-	- func: keypressed(key)
-	- desc: called when the player presses a key
+	- func: SetTextPos(x, y)
+	- desc: sets the positions of the object's text
 --]]---------------------------------------------------------
-function columnlistrow:keypressed(key, unicode)
+function columnlistrow:SetTextPos(x, y)
 
-	if self.visible == false then
-		return
-	end
-	
+	self.textx = x
+	self.texty = y
+
 end
 
 --[[---------------------------------------------------------
-	- func: keyreleased(key)
-	- desc: called when the player releases a key
+	- func: SetFont(font)
+	- desc: sets the object's font
 --]]---------------------------------------------------------
-function columnlistrow:keyreleased(key)
+function columnlistrow:SetFont(font)
 
-	if self.visible == false then
-		return
-	end
+	self.font = font
+
+end
+
+--[[---------------------------------------------------------
+	- func: GetFont()
+	- desc: gets the object's font
+--]]---------------------------------------------------------
+function columnlistrow:GetFont()
+
+	return self.font
+
+end
+
+--[[---------------------------------------------------------
+	- func: GetColorIndex()
+	- desc: gets the object's color index
+--]]---------------------------------------------------------
+function columnlistrow:GetColorIndex()
+
+	return self.colorindex
+
+end
+
+--[[---------------------------------------------------------
+	- func: SetTextColor(color)
+	- desc: sets the object's text color
+--]]---------------------------------------------------------
+function columnlistrow:SetTextColor(color)
+
+	self.textcolor = color
 
 end

@@ -166,6 +166,10 @@ end
 --]]---------------------------------------------------------
 function tabbutton:SetImage(image)
 
-	self.image = image
+	if type(image) == "string" then
+		self.image = love.graphics.newImage(image)
+	else
+		self.image = image
+	end
 	
 end
