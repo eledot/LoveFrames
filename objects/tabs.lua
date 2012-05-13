@@ -25,6 +25,7 @@ function tabs:initialize()
 	self.tabheight		= 25
 	self.autosize		= true
 	self.internal		= false
+	self.tooltipfont	= love.graphics.newFont(10)
 	self.tabs			= {}
 	self.internals		= {}
 	self.children 		= {}
@@ -400,6 +401,22 @@ function tabs:SetTabHeight(height)
 		
 		if v.type == "tabbutton" then
 			v:SetHeight(self.tabheight)
+		end
+		
+	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: SetToolTipFont(font)
+	- desc: sets the height of the tab buttons
+--]]---------------------------------------------------------
+function tabs:SetToolTipFont(font)
+
+	for k, v in ipairs(self.internals) do
+		
+		if v.type == "tabbutton" and v.tooltip then
+			v.tooltip:SetFont(font)
 		end
 		
 	end

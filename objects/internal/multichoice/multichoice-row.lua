@@ -21,7 +21,6 @@ function multichoicerow:initialize()
 	self.internal		= true
 	self.down			= false
 	self.canclick		= false
-	self.OnClick		= nil
 	
 end
 
@@ -38,6 +37,18 @@ function multichoicerow:update(dt)
 	end
 	
 	self:CheckHover()
+	
+	if self.hover == false then
+		self.down = false
+	elseif self.hover == true then
+		if loveframes.hoverobject == self then
+			self.down = true
+		end
+	end
+	
+	if self.down == false and loveframes.hoverobject == self then
+		self.hover = true
+	end
 	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base then
@@ -84,7 +95,12 @@ function multichoicerow:mousepressed(x, y, button)
 		return
 	end
 	
-	self.down = true
+	if self.hover == true and button == "l" then
+	
+		self.down = true
+		loveframes.hoverobject = self
+		
+	end
 
 end
 
@@ -107,6 +123,10 @@ function multichoicerow:mousereleased(x, y, button)
 
 end
 
+--[[---------------------------------------------------------
+	- func: SetText(text)
+	- desc: sets the object's text
+--]]---------------------------------------------------------
 function multichoicerow:SetText(text)
 
 	self.text = text

@@ -100,6 +100,7 @@ function multichoice:mousepressed(x, y, button)
 		
 		self.haslist = true
 		self.list = multichoicelist:new(self)
+		loveframes.hoverobject = self
 		
 	end
 

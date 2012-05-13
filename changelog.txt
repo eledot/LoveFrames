@@ -1,4 +1,18 @@
 ================================================
+Version 0.9.1.2 - Alpha (May 12 - 2012)
+================================================
+[ADDED] a system for preventing objects from being hovered over when another object is being pressed or is "down"
+[ADDED] "down" property for the checkbox object
+[ADDED] "down" property for the collapsible category object
+[ADDED] a new method for the tabs object: SetToolTipFont(font)
+
+[FIXED] list:GetScrollBar() crashing when the list had no scroll bar
+[FIXED] not being able to move the text input blinker to the front or end of the it's text by clicking on it's whitespace
+[FIXED] the multichoice row object being "down" when mouse buttons other than the left mouse button were pressed
+
+[CHANGED] collapsible category opening and closing system (will now only open or close when "down")
+
+================================================
 Version 0.9.1 - Alpha (May 8 - 2012)
 ================================================
 [ADDED] a new object: image button

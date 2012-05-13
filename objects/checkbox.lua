@@ -22,6 +22,7 @@ function checkbox:initialize()
 	self.checked		= false
 	self.lastvalue		= false
 	self.internal		= false
+	self.down			= true
 	self.internals		= {}
 	self.OnChanged		= nil
 	
@@ -40,6 +41,18 @@ function checkbox:update(dt)
 	end
 	
 	self:CheckHover()
+	
+	if self.hover == false then
+		self.down = false
+	elseif self.hover == true then
+		if loveframes.hoverobject == self then
+			self.down = true
+		end
+	end
+	
+	if self.down == false and loveframes.hoverobject == self then
+		self.hover = true
+	end
 	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base then
@@ -126,6 +139,9 @@ function checkbox:mousepressed(x, y, button)
 		if baseparent and baseparent.type == "frame" then
 			baseparent:MakeTop()
 		end
+		
+		self.down = true
+		loveframes.hoverobject = self
 		
 	end
 	

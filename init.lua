@@ -9,7 +9,7 @@ loveframes = {}
 -- library info
 loveframes.info = {}
 loveframes.info.author = "Nikolai Resokav"
-loveframes.info.version = "0.9.1"
+loveframes.info.version = "0.9.1.2"
 loveframes.info.stage = "Alpha"
 
 -- library configurations
@@ -20,8 +20,8 @@ loveframes.config["ACTIVESKIN"]	   		= "Blue"
 loveframes.config["INDEXSKINIMAGES"]	= true
 loveframes.config["DEBUG"]				= true
 
--- drawcount
 loveframes.drawcount = 0
+loveframes.hoverobject = false
 
 --[[---------------------------------------------------------
 	- func: load()
@@ -114,6 +114,10 @@ function loveframes.mousereleased(x, y, button)
 	local object = loveframes.base
 	
 	object:mousereleased(x, y, button)
+	
+	if button == "l" then
+		loveframes.hoverobject = false
+	end
 	
 end
 

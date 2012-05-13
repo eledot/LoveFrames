@@ -395,6 +395,14 @@ function textinput:GetTextCollisions(x, y)
 			break
 		end
 		
+		if x < tx then
+			self:MoveBlinker(0, true)
+		end
+		
+		if x > (tx + width) then
+			self:MoveBlinker(#self.text, true)
+		end
+		
 	end
 	
 end
