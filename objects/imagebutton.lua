@@ -40,6 +40,18 @@ function imagebutton:update(dt)
 	
 	self:CheckHover()
 	
+	if self.hover == false then
+		self.down = false
+	elseif self.hover == true then
+		if loveframes.hoverobject == self then
+			self.down = true
+		end
+	end
+	
+	if self.down == false and loveframes.hoverobject == self then
+		self.hover = true
+	end
+	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base then
 		self.x = self.parent.x + self.staticx
@@ -98,6 +110,7 @@ function imagebutton:mousepressed(x, y, imagebutton)
 		end
 	
 		self.down = true
+		loveframes.hoverobject = self
 		
 	end
 	

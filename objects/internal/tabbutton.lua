@@ -26,8 +26,8 @@ function tabbutton:initialize(parent, text, tabnumber, tip, image)
 	self.image			= nil
 	
 	if tip then
-		local tooltip = tooltip:new(self, tip)
-		tooltip:SetFollowCursor(false)
+		self.tooltip = tooltip:new(self, tip)
+		self.tooltip:SetFollowCursor(false)
 	end
 	
 	if image then
@@ -121,6 +121,7 @@ function tabbutton:mousepressed(x, y, button)
 		end
 	
 		self.down = true
+		loveframes.hoverobject = self
 		
 	end
 	

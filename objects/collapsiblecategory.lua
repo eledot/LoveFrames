@@ -21,6 +21,7 @@ function collapsiblecategory:initialize()
 	self.padding		= 5
 	self.internal		= false
 	self.open			= false
+	self.down		 	= false
 	self.children		= {}
 	self.OnOpenedClosed	= nil
 	
@@ -115,6 +116,9 @@ function collapsiblecategory:mousepressed(x, y, button)
 			if baseparent and baseparent.type == "frame" then
 				baseparent:MakeTop()
 			end
+			
+			self.down = true
+			loveframes.hoverobject = self
 		
 		end
 		
@@ -147,13 +151,15 @@ function collapsiblecategory:mousereleased(x, y, button)
 	local open = self.open
 	local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, self.closedheight, 1)
 	
-	if hover == true and button == "l" and col == true then
+	if hover == true and button == "l" and col == true and self.down == true then
 			
 		if open == true then
 			self:SetOpen(false)
 		else
 			self:SetOpen(true)
 		end
+		
+		self.down = false
 		
 	end
 	

@@ -259,8 +259,9 @@ function list:CalculateSize()
 			self.extra = self.itemheight - height
 			
 			if vbar == false then
-				table.insert(self.internals, scrollbody:new(self, display))
-				self:GetScrollBar().autoscroll = self.autoscroll
+				local scrollbar = scrollbody:new(self, display)
+				scrollbar.autoscroll = self.autoscroll
+				table.insert(self.internals, scrollbar)
 				self.vbar = true
 			end
 			
@@ -287,8 +288,9 @@ function list:CalculateSize()
 			self.extra = self.itemwidth - width
 			
 			if hbar == false then
-				table.insert(self.internals, scrollbody:new(self, display))
-				self:GetScrollBar().autoscroll = self.autoscroll
+				local scrollbar = scrollbody:new(self, display)
+				scrollbar.autoscroll = self.autoscroll
+				table.insert(self.internals, scrollbar)
 				self.hbar = true
 			end
 			
@@ -501,7 +503,17 @@ end
 --]]---------------------------------------------------------
 function list:GetScrollBar()
 
-	return self.internals[1].internals[1].internals[1]
+	if self.vbar == true or self.hbar == true then
+	
+		local scrollbar = self.internals[1].internals[1].internals[1]
+		
+		return scrollbar
+		
+	else
+		
+		return false
+	
+	end
 	
 end
 

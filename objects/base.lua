@@ -577,6 +577,7 @@ function base:CheckHover()
 	
 	local x, y = love.mouse.getPosition()
 	local selfcol = loveframes.util.BoundingBox(x, self.x, y, self.y, 1, self.width, 1, self.height)
+	local hoverobject = loveframes.hoverobject
 	
 	-- is the mouse inside the object?
 	if selfcol == true then
@@ -584,7 +585,15 @@ function base:CheckHover()
 		local top = self:IsTopCollision()
 		
 		if top == true then
-			self.hover = true
+			if hoverobject == false then
+				self.hover = true
+			else
+				if hoverobject == self then
+					self.hover = true
+				else
+					self.hover = false
+				end
+			end
 		else
 			self.hover = false
 		end
