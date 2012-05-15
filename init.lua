@@ -9,7 +9,7 @@ loveframes = {}
 -- library info
 loveframes.info = {}
 loveframes.info.author = "Nikolai Resokav"
-loveframes.info.version = "0.9.1.2"
+loveframes.info.version = "0.9.1.3"
 loveframes.info.stage = "Alpha"
 
 -- library configurations
@@ -22,6 +22,7 @@ loveframes.config["DEBUG"]				= true
 
 loveframes.drawcount = 0
 loveframes.hoverobject = false
+loveframes.modalobject = false
 
 --[[---------------------------------------------------------
 	- func: load()

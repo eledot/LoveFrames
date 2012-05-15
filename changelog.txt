@@ -1,4 +1,20 @@
 ================================================
+Version 0.9.1.3 - Alpha (May 14 - 2012)
+================================================
+[ADDED] modal system for frames
+[ADDED] a new frame method: SetModal(bool)
+[ADDED] a new frame method: GetModal()
+[ADDED] a new frame method: SetVisible(bool) - this override is part of a frame bug fix
+[ADDED] "showclose" property for the frame object
+[ADDED] a new internal object: modal background
+[ADDED] a new base method: IsActive()
+[ADDED] a new base method: CenterX()
+[ADDED] a new base method: CenterY()
+[ADDED] a new skin function: DrawOverColumList()
+
+[FIXED] a bug that made the frame's close button become visisble when the frame was made visible and show close button was set to false
+
+================================================
 Version 0.9.1.2 - Alpha (May 12 - 2012)
 ================================================
 [ADDED] a system for preventing objects from being hovered over when another object is being pressed or is "down"

@@ -285,6 +285,42 @@ function base:Center()
 end
 
 --[[---------------------------------------------------------
+	- func: CenterX()
+	- desc: centers the object by it's x value
+--]]---------------------------------------------------------
+function base:CenterX()
+
+	local parent = self.parent
+	
+	if parent == loveframes.base then
+		local width = love.graphics.getWidth()
+		self.x = width/2 - self.width/2
+	else
+		local width = parent.width
+		self.staticx = width/2 - self.width/2
+	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: CenterY()
+	- desc: centers the object by it's y value
+--]]---------------------------------------------------------
+function base:CenterY()
+
+	local parent = self.parent
+	
+	if parent == loveframes.base then
+		local height = love.graphics.getHeight()
+		self.y = height/2 - self.height/2
+	else
+		local height = parent.height
+		self.staticy = height/2 - self.height/2
+	end
+	
+end
+
+--[[---------------------------------------------------------
 	- func: SetSize(width, height)
 	- desc: sets the object's size
 --]]---------------------------------------------------------
@@ -578,6 +614,7 @@ function base:CheckHover()
 	local x, y = love.mouse.getPosition()
 	local selfcol = loveframes.util.BoundingBox(x, self.x, y, self.y, 1, self.width, 1, self.height)
 	local hoverobject = loveframes.hoverobject
+	local modalobject = loveframes.modalobject
 	
 	-- is the mouse inside the object?
 	if selfcol == true then
@@ -607,6 +644,26 @@ function base:CheckHover()
 	else
 		
 		self.hover = false
+		
+	end
+	
+	if modalobject ~= false then
+	
+		if modalobject ~= self then
+		
+			local baseparent = self:GetBaseParent()
+			
+			if baseparent ~= modalobject then
+			
+				self.hover = false
+				
+				if self.focus then
+					self.focus = false
+				end
+				
+			end
+			
+		end
 		
 	end
 	
@@ -813,5 +870,25 @@ end
 function base:GetRetainSize()
 	
 	return self.retainsize
+	
+end
+
+--[[---------------------------------------------------------
+	- func: IsActive()
+	- desc: gets whether or not the object is active within
+			it's parent's child table
+--]]---------------------------------------------------------
+function base:IsActive()
+
+	local parent = self.parent
+	local valid = false
+	
+	for k, v in ipairs(parent.children) do
+		if v == self then
+			valid = true
+		end
+	end
+	
+	return valid
 	
 end

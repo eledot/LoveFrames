@@ -13,19 +13,22 @@ frame:include(loveframes.templates.default)
 --]]---------------------------------------------------------
 function frame:initialize()
 	
-	self.type			= "frame"
-	self.name 			= "Frame"
-	self.width 			= 300
-	self.height 		= 150
-	self.clickx 		= 0
-	self.clicky 		= 0
-	self.internal		= false
-	self.draggable 		= true
-	self.screenlocked 	= false
-	self.dragging 		= false
-	self.internals		= {}
-	self.children 		= {}
-	self.OnClose		= nil
+	self.type				= "frame"
+	self.name 				= "Frame"
+	self.width 				= 300
+	self.height 			= 150
+	self.clickx 			= 0
+	self.clicky 			= 0
+	self.internal			= false
+	self.draggable 			= true
+	self.screenlocked 		= false
+	self.dragging 			= false
+	self.modal				= false
+	self.modalbackground	= false
+	self.showclose			= true
+	self.internals			= {}
+	self.children 			= {}
+	self.OnClose			= nil
 	
 	local close = closebutton:new()
 	close.parent = self
@@ -86,6 +89,23 @@ function frame:update(dt)
 		end
 		if self.y + self.height > height then
 			self.y = height - self.height
+		end
+		
+	end
+	
+	if self.modal == true then
+		
+		local numtooltips = 0 
+		
+		for k, v in ipairs(loveframes.base.children) do
+			if v.type == "tooltip" then
+				numtooltips = numtooltips + 1
+			end
+		end
+		
+		if self.draworder ~= #loveframes.base.children - numtooltips then
+			self.modalbackground:MoveToTop()
+			self:MoveToTop()
 		end
 		
 	end
@@ -280,7 +300,8 @@ function frame:ShowCloseButton(bool)
 	local close = self.internals[1]
 
 	close.visible = bool
-
+	self.showclose = bool
+	
 end
 
 --[[---------------------------------------------------------
@@ -315,4 +336,73 @@ function frame:MakeTop()
 	
 	loveframes.base.children[key]:mousepressed(x, y, "l")
 		
+end
+
+--[[---------------------------------------------------------
+	- func: SetModal(bool)
+	- desc: makes the object the top object in the drawing
+			order
+--]]---------------------------------------------------------
+function frame:SetModal(bool)
+
+	self.modal = bool
+	
+	if bool == true then
+	
+		if loveframes.modalobject ~= false then
+			loveframes.modalobject:SetModal(false)
+		end
+	
+		loveframes.modalobject = self
+		
+		if self.modalbackground == false then
+			self.modalbackground = modalbackground:new(self)
+			self.modal = true
+		end
+		
+	else
+	
+		if loveframes.modalobject == self then
+	
+			loveframes.modalobject = false
+			
+			if self.modalbackground ~= false then
+				self.modalbackground:Remove()
+				self.modalbackground = false
+				self.modal = false
+			end
+			
+		end
+		
+	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: GetModal()
+	- desc: gets whether or not the object is in a modal
+			state
+--]]---------------------------------------------------------
+function frame:GetModal()
+
+	return self.modal
+	
+end
+
+--[[---------------------------------------------------------
+	- func: SetVisible(bool)
+	- desc: set's whether the object is visible or not
+--]]---------------------------------------------------------
+function frame:SetVisible(bool)
+
+	self.visible = bool
+	
+	for k, v in ipairs(self.children) do
+		v:SetVisible(bool)
+	end
+
+	if self.showclose == true then
+		self.internals[1].visible = bool
+	end
+	
 end

@@ -28,6 +28,7 @@ function tabbutton:initialize(parent, text, tabnumber, tip, image)
 	if tip then
 		self.tooltip = tooltip:new(self, tip)
 		self.tooltip:SetFollowCursor(false)
+		self.tooltip:SetOffsets(0, -5)
 	end
 	
 	if image then

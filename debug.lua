@@ -237,9 +237,29 @@ function loveframes.debug.ExamplesMenu()
 		local text1 = loveframes.Create("text", frame1)
 		text1:SetText("This is an example frame.")
 		text1.Update = function(object2, dt)
-			object2:Center()
+			object2:CenterX()
+			object2:SetY(40)
 		end
 		
+		local button1 = loveframes.Create("button", frame1)
+		button1:SetText("Modal")
+		button1:SetWidth(100)
+		button1:Center()
+		button1.Update = function(object2, dt)
+			local modal = object2:GetParent():GetModal()
+			
+			if modal == true then
+				object2:SetText("Remove Modal")
+				object2.OnClick = function()
+					object2:GetParent():SetModal(false)
+				end
+			else
+				object2:SetText("Set Modal")
+				object2.OnClick = function()
+					object2:GetParent():SetModal(true)
+				end
+			end
+		end
 	end
 	exampleslist:AddItem(frameexample)
 	

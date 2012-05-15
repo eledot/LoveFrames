@@ -116,7 +116,7 @@ function columnlistarea:draw()
 	love.graphics.setStencil()
 	
 	if self.Draw == nil then
-		skin.DrawColumnListArea(self)
+		skin.DrawOverColumnListArea(self)
 	end
 	
 end

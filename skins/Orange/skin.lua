@@ -164,6 +164,9 @@ skin.controls.columnlistrow_body1_color				= {232, 232, 232, 255}
 skin.controls.columnlistrow_border2_color			= bordercolor
 skin.controls.columnlistrow_body2_color				= {200, 200, 200, 255}
 
+-- modalbackground
+skin.controls.modalbackground_body_color			= {255, 255, 255, 100}
+
 --[[---------------------------------------------------------
 	- func: OutlinedRectangle(object)
 	- desc: creates and outlined rectangle
@@ -1163,12 +1166,12 @@ end
 
 --[[---------------------------------------------------------
 	- func: skin.DrawOverColumnListArea(object)
-	- desc: draws the column list area object
+	- desc: draws over the column list area object
 --]]---------------------------------------------------------
-function skin.DrawColumnListArea(object)
-	
-	love.graphics.setColor(unpack(skin.controls.columnlistarea_border_color))
-	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
+function skin.DrawOverColumnListArea(object)
+
+	love.graphics.setColor(unpack(skin.controls.columnlist_border_color))
+	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), true, false, true, true)
 	
 end
 
@@ -1202,6 +1205,17 @@ function skin.DrawColumnListRow(object)
 		skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	
 	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: skin.DrawModalBackground(object)
+	- desc: draws the modal background object
+--]]---------------------------------------------------------
+function skin.DrawModalBackground(object)
+
+	love.graphics.setColor(unpack(skin.controls.modalbackground_body_color))
+	love.graphics.rectangle("fill", object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	
 end
 
