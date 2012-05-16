@@ -260,9 +260,9 @@ function list:CalculateSize()
 			
 			if vbar == false then
 				local scrollbar = scrollbody:new(self, display)
-				scrollbar.autoscroll = self.autoscroll
 				table.insert(self.internals, scrollbar)
 				self.vbar = true
+				self:GetScrollBar().autoscroll = true
 			end
 			
 		else
@@ -289,9 +289,9 @@ function list:CalculateSize()
 			
 			if hbar == false then
 				local scrollbar = scrollbody:new(self, display)
-				scrollbar.autoscroll = self.autoscroll
 				table.insert(self.internals, scrollbar)
 				self.hbar = true
+				self:GetScrollBar().autoscroll = true
 			end
 			
 		else
