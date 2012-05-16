@@ -1,4 +1,9 @@
 ================================================
+Version 0.9.1.5 - Alpha (May 16 - 2012)
+================================================
+[FIXED] a bug that caused scrollbars to always autoscroll
+
+================================================
 Version 0.9.1.4 - Alpha (May 16 - 2012)
 ================================================
 [FIXED] list:SetAutoScroll() not working
