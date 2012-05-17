@@ -527,4 +527,8 @@ function list:SetAutoScroll(bool)
 
 	self.autoscroll = bool
 	
+	if self:GetScrollBar() ~= false then
+		self:GetScrollBar().autoscroll = bool
+	end
+	
 end

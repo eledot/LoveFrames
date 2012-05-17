@@ -14,6 +14,7 @@ columnlistarea:include(loveframes.templates.default)
 function columnlistarea:initialize(parent)
 	
 	self.type 				= "columnlistarea"
+	self.display			= "vertical"
 	self.parent				= parent
 	self.width 				= 80
 	self.height 			= 25
@@ -208,6 +209,7 @@ function columnlistarea:CalculateSize()
 		if bar == false then
 			table.insert(self.internals, scrollbody:new(self, "vertical"))
 			self.bar = true
+			self:GetScrollBar().autoscroll = self.parent.autoscroll
 		end
 			
 	else
@@ -261,6 +263,10 @@ function columnlistarea:RedoLayout()
 	
 end
 
+--[[---------------------------------------------------------
+	- func: AddRow(data)
+	- desc: adds a row to the object
+--]]---------------------------------------------------------
 function columnlistarea:AddRow(data)
 
 	local row = columnlistrow:new(self, data)
@@ -287,7 +293,17 @@ end
 --]]---------------------------------------------------------
 function columnlistarea:GetScrollBar()
 
-	return self.internals[1].internals[1].internals[1]
+	if self.bar ~= false then
+	
+		local scrollbar = self.internals[1].internals[1].internals[1]
+		
+		return scrollbar
+		
+	else
+		
+		return false
+	
+	end
 	
 end
 
@@ -297,6 +313,10 @@ end
 --]]---------------------------------------------------------
 function columnlistarea:Sort(column, desc)
 	
+	self.rowcolorindex = 1
+	
+	local colorindexmax = self.rowcolorindexmax
+	
 	table.sort(self.children, function(a, b)
 		if desc then
             return a.columndata[column] < b.columndata[column]
@@ -305,7 +325,34 @@ function columnlistarea:Sort(column, desc)
 		end
 	end)
 	
+	for k, v in ipairs(self.children) do
+	
+		local colorindex = self.rowcolorindex
+		
+		v.colorindex = colorindex
+		
+		if colorindex == colorindexmax then
+			self.rowcolorindex = 1
+		else
+			self.rowcolorindex = colorindex + 1
+		end
+	
+	end
+	
 	self:CalculateSize()
 	self:RedoLayout()
+	
+end
+
+--[[---------------------------------------------------------
+	- func: Clear()
+	- desc: removes all items from the object's list
+--]]---------------------------------------------------------
+function columnlistarea:Clear()
+
+	self.children = {}
+	self:CalculateSize()
+	self:RedoLayout()
+	self.parent:AdjustColumns()
 	
 end

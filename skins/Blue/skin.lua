@@ -762,7 +762,7 @@ end
 function skin.DrawOverMultiChoiceList(object)
 
 	love.graphics.setColor(unpack(skin.controls.multichoicelist_border_color))
-	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
+	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), true)
 	
 end
 
@@ -807,12 +807,6 @@ end
 	- desc: draws the text object
 --]]---------------------------------------------------------
 function skin.DrawText(object)
-
-	--love.graphics.setColor(0, 0, 0, 255)
-	--love.graphics.rectangle("fill", object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
-	--love.graphics.setFont(object.font)
-	--love.graphics.setColor(255, 255, 255, 255)
-	--love.graphics.print(object.text, object:GetX(), object:GetY())
 	
 end
 
@@ -850,6 +844,14 @@ function skin.DrawTextInput(object)
 		
 	end
 	
+end
+
+--[[---------------------------------------------------------
+	- func: DrawOverTextInput(object)
+	- desc: draws over the text input object
+--]]---------------------------------------------------------
+function skin.DrawOverTextInput(object)
+
 	love.graphics.setColor(unpack(skin.controls.textinput_border_color))
 	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	
@@ -1170,7 +1172,7 @@ end
 function skin.DrawOverColumnListArea(object)
 
 	love.graphics.setColor(unpack(skin.controls.columnlist_border_color))
-	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), true, false, true, true)
+	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	
 end
 

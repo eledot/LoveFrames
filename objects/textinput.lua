@@ -112,6 +112,10 @@ function textinput:draw()
 	love.graphics.print(self.text, self.textx, self.texty)
 	
 	love.graphics.setStencil()
+	
+	if self.Draw == nil then
+		skin.DrawOverTextInput(self)
+	end
 
 end
 

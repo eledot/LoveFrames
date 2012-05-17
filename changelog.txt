@@ -1,4 +1,18 @@
 ================================================
+Version 0.9.1.6 - Alpha (May 17 - 2012)
+================================================
+[ADDED] a new column list method: Clear()
+[ADDED] a new column list method: SetAutoScroll(bool)
+[ADDED] "autoscroll" property for the column list object
+[ADDED] a new column list area method: Clear()
+[ADDED] a new skin function: DrawOverTextInput()
+
+[FIXED] not being able to move the column list object's scrollbar by clicking on it's scroll area
+[FIXED] column list rows color indexs becoming disorderd when the list was sorted via a column list header
+
+[CHANGED] a few minor things in the default skins
+
+================================================
 Version 0.9.1.5 - Alpha (May 16 - 2012)
 ================================================
 [FIXED] a bug that caused scrollbars to always autoscroll

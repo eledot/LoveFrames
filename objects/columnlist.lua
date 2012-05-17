@@ -16,6 +16,7 @@ function columnlist:initialize()
 	self.type 			= "columnlist"
 	self.width 			= 300
 	self.height 		= 100
+	self.autoscroll		= false
 	self.internal		= false
 	self.children		= {}
 	self.internals 		= {}
@@ -287,5 +288,31 @@ end
 function columnlist:SetMaxColorIndex(num)
 
 	self.internals[1].colorindexmax = num
+	
+end
+
+--[[---------------------------------------------------------
+	- func: Clear()
+	- desc: removes all items from the object's list
+--]]---------------------------------------------------------
+function columnlist:Clear()
+
+	self.internals[1]:Clear()
+	
+end
+
+--[[---------------------------------------------------------
+	- func: SetAutoScroll(bool)
+	- desc: sets whether or not the list's scrollbar should
+			auto scroll to the bottom when a new object is
+			added to the list
+--]]---------------------------------------------------------
+function columnlist:SetAutoScroll(bool)
+
+	self.autoscroll = bool
+	
+	if self.internals[1]:GetScrollBar() ~= false then
+		self.internals[1]:GetScrollBar().autoscroll = bool
+	end
 	
 end
