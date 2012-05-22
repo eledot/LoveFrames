@@ -37,8 +37,11 @@ end
 --]]---------------------------------------------------------
 function progressbar:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -49,6 +52,7 @@ function progressbar:update(dt)
 	local lerpto = self.lerpto
 	local lerpfrom = self.lerpfrom
 	local value = self.value
+	local completed = self.completed
 	
 	self:CheckHover()
 	
@@ -102,7 +106,7 @@ function progressbar:update(dt)
 	end
 	
 	-- completion check
-	if self.completed == false then
+	if completed == false then
 		if self.value >= self.max then
 			self.completed = true
 			if self.OnComplete then
@@ -123,7 +127,9 @@ end
 --]]---------------------------------------------------------
 function progressbar:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	

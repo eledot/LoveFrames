@@ -34,8 +34,11 @@ end
 --]]---------------------------------------------------------
 function checkbox:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -97,18 +100,20 @@ end
 --]]---------------------------------------------------------
 function checkbox:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
-	
-	loveframes.drawcount = loveframes.drawcount + 1
-	self.draworder = loveframes.drawcount
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
 	local defaultskin = loveframes.config["DEFAULTSKIN"]
 	local selfskin = self.skin
 	local skin = loveframes.skins.available[selfskin] or loveframes.skins.available[index] or loveframes.skins.available[defaultskin]
+	
+	loveframes.drawcount = loveframes.drawcount + 1
+	self.draworder = loveframes.drawcount
 	
 	if self.Draw ~= nil then
 		self.Draw(self)
@@ -128,11 +133,15 @@ end
 --]]---------------------------------------------------------
 function checkbox:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and button == "l" then
+	local hover = self.hover
+	
+	if hover == true and button == "l" then
 		
 		local baseparent = self:GetBaseParent()
 	
@@ -153,7 +162,9 @@ end
 --]]---------------------------------------------------------
 function checkbox:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -206,7 +217,6 @@ function checkbox:SetText(text)
 	
 		self.width = self.boxwidth
 		self.height = self.boxheight
-		
 		self.internals = {}
 		
 	end
@@ -219,8 +229,11 @@ end
 --]]---------------------------------------------------------
 function checkbox:GetText()
 
-	if self.internals[1] then
-		return self.internals[1].text
+	local internals = self.internals
+	local text = internals[1]
+	
+	if text then
+		return text.text
 	else
 		return false
 	end
@@ -288,10 +301,13 @@ end
 --]]---------------------------------------------------------
 function checkbox:SetFont(font)
 
+	local internals = self.internals
+	local text = internals[1]
+	
 	self.font = font
 	
-	if self.internals[1] then
-		self.internals[1]:SetFont(font)
+	if text then
+		text:SetFont(font)
 	end
 	
 end

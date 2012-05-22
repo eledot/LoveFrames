@@ -130,9 +130,7 @@ function text:SetText(t)
 			local parts = loveframes.util.SplitSring(v, " ")
 					
 			for i, j in ipairs(parts) do
-			
 				table.insert(self.text, {color = prevcolor, text = j})
-				
 			end
 			
 		end
@@ -215,12 +213,17 @@ function text:DrawText()
 	local lines = 0
 	local totalwidth = 0
 	local prevtextwidth
+	local x = self.x
+	local y = self.y
 	
 	for k, v in ipairs(textdata) do
 		
-		if type(v.text) == "string" then
+		local text = v.text
+		local color = v.color
 		
-			local width = font:getWidth(v.text)
+		if type(text) == "string" then
+		
+			local width = font:getWidth(text)
 			totalwidth = totalwidth + width
 			
 			if maxw > 0 then
@@ -243,8 +246,8 @@ function text:DrawText()
 				prevtextwidth = width
 				
 				love.graphics.setFont(font)
-				love.graphics.setColor(unpack(v.color))
-				love.graphics.print(v.text, self.x + drawx, self.y + drawy)
+				love.graphics.setColor(unpack(color))
+				love.graphics.print(text, x + drawx, y + drawy)
 			
 			else
 			
@@ -255,8 +258,8 @@ function text:DrawText()
 				prevtextwidth = width
 				
 				love.graphics.setFont(font)
-				love.graphics.setColor(unpack(v.color))
-				love.graphics.print(v.text, self.x + drawx, self.y)
+				love.graphics.setColor(unpack(color))
+				love.graphics.print(text, x + drawx, y)
 				
 			end
 			
@@ -332,10 +335,12 @@ end
 --]]---------------------------------------------------------
 function text:SetFont(font)
 
+	local original = self.original
+	
 	self.font = font
 	
-	if self.original then
-		self:SetText(self.original)
+	if original then
+		self:SetText(original)
 	end
 	
 end

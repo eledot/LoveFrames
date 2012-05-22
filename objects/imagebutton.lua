@@ -32,23 +32,30 @@ end
 --]]---------------------------------------------------------
 function imagebutton:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
 	self:CheckHover()
 	
-	if self.hover == false then
+	local hover = self.hover
+	local hoverobject = loveframes.hoverobject
+	local down = self.down
+	
+	if hover == false then
 		self.down = false
-	elseif self.hover == true then
-		if loveframes.hoverobject == self then
+	elseif hover == true then
+		if hoverobject == self then
 			self.down = true
 		end
 	end
 	
-	if self.down == false and loveframes.hoverobject == self then
+	if down == false and hoverobject == self then
 		self.hover = true
 	end
 	
@@ -70,7 +77,9 @@ end
 --]]---------------------------------------------------------
 function imagebutton:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -92,16 +101,20 @@ function imagebutton:draw()
 end
 
 --[[---------------------------------------------------------
-	- func: mousepressed(x, y, imagebutton)
-	- desc: called when the player presses a mouse imagebutton
+	- func: mousepressed(x, y, button)
+	- desc: called when the player presses a mouse button
 --]]---------------------------------------------------------
-function imagebutton:mousepressed(x, y, imagebutton)
+function imagebutton:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and imagebutton == "l" then
+	local hover = self.hover
+	
+	if hover == true and button == "l" then
 		
 		local baseparent = self:GetBaseParent()
 	
@@ -117,12 +130,14 @@ function imagebutton:mousepressed(x, y, imagebutton)
 end
 
 --[[---------------------------------------------------------
-	- func: mousereleased(x, y, imagebutton)
-	- desc: called when the player releases a mouse imagebutton
+	- func: mousereleased(x, y, button)
+	- desc: called when the player releases a mouse button
 --]]---------------------------------------------------------
-function imagebutton:mousereleased(x, y, imagebutton)
+function imagebutton:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -233,9 +248,11 @@ end
 --]]---------------------------------------------------------
 function imagebutton:SizeToImage()
 
-	if self.image then
-		self.width = self.image:getWidth()
-		self.height = self.image:getHeight()
+	local image = self.image
+	
+	if image then
+		self.width = image:getWidth()
+		self.height = image:getHeight()
 	end
 
 end

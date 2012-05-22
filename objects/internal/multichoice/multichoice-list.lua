@@ -49,8 +49,11 @@ end
 --]]---------------------------------------------------------
 function multichoicelist:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -92,11 +95,6 @@ function multichoicelist:update(dt)
 		v.y = (v.parent.y + v.staticy) - self.offsety
 		v.x = (v.parent.x + v.staticx) - self.offsetx
 	end
-	
-	--if loveframes.base.children[#loveframes.base.children] ~= self then
-	--	self:Remove()
-	--	table.insert(loveframes.base.children, self)
-	--end
 	
 	if self.Update then
 		self.Update(self, dt)

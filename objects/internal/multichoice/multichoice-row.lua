@@ -30,8 +30,11 @@ end
 --]]---------------------------------------------------------
 function multichoicerow:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -67,6 +70,12 @@ end
 	- desc: draws the object
 --]]---------------------------------------------------------
 function multichoicerow:draw()
+	
+	local visible = self.visible
+	
+	if visible == false then
+		return
+	end
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount

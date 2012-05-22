@@ -6,6 +6,10 @@
 -- scrollbar class
 scrollbar = class("scrollbar", base)
 
+--[[---------------------------------------------------------
+	- func: initialize()
+	- desc: initializes the object
+--]]---------------------------------------------------------
 function scrollbar:initialize(parent, bartype)
 
 	self.type			= "scrollbar"
@@ -40,23 +44,32 @@ function scrollbar:initialize(parent, bartype)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: update(deltatime)
+	- desc: updates the object
+--]]---------------------------------------------------------
 function scrollbar:update(dt)
-
-	local x, y = love.mouse.getPosition()
-	local bartype = self.bartype
-	local cols, basecols = {}, {}
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
 	self:CheckHover()
 	
-	if self.bartype == "vertical" then
+	local x, y = love.mouse.getPosition()
+	local bartype = self.bartype
+	local cols = {}
+	local basecols = {}
+	local dragging = self.dragging
+	
+	if bartype == "vertical" then
 		self.width 		= self.parent.width
-	elseif self.bartype == "horizontal" then
+	elseif bartype == "horizontal" then
 		self.height 	= self.parent.height
 	end
 	
@@ -76,7 +89,7 @@ function scrollbar:update(dt)
 		self.x = parent.x + parent.width - self.width
 		self.y = parent.y + self.staticy
 			
-		if self.dragging == true then
+		if dragging == true then
 			if self.staticy ~= self.lasty then
 				if listo.OnScroll then
 					listo.OnScroll(listo)
@@ -90,6 +103,8 @@ function scrollbar:update(dt)
 		local remaining = (0 + self.staticy)
 		local percent = remaining/space
 		local extra = listo.extra * percent
+		local autoscroll = self.autoscroll
+		local lastheight = self.lastheight
 		
 		listo.offsety = 0 + extra
 			
@@ -103,8 +118,8 @@ function scrollbar:update(dt)
 			listo.offsety = 0
 		end
 		
-		if self.autoscroll == true then
-			if listo.itemheight ~= self.lastheight then
+		if autoscroll == true then
+			if listo.itemheight ~= lastheight then
 				self.lastheight = listo.itemheight
 				self:Scroll(self.maxy)
 			end
@@ -128,7 +143,7 @@ function scrollbar:update(dt)
 		self.x = parent.x + self.staticx
 		self.y = parent.y + self.staticy
 			
-		if self.dragging == true then
+		if dragging == true then
 			if self.staticx ~= self.lastx then
 				if listo.OnScroll then
 					listo.OnScroll(listo)
@@ -142,6 +157,8 @@ function scrollbar:update(dt)
 		local remaining = (0 + self.staticx)
 		local percent = remaining/space
 		local extra = listo.extra * percent
+		local autoscroll = self.autoscroll
+		local lastwidth = self.lastwidth
 		
 		listo.offsetx = 0 + extra
 		
@@ -155,8 +172,8 @@ function scrollbar:update(dt)
 			listo.offsetx = 0
 		end
 		
-		if self.autoscroll == true then
-			if self.width ~= self.lastwidth then
+		if autoscroll == true then
+			if self.width ~= lastwidth then
 				self.width = self.width
 				self:Scroll(self.maxx)
 			end
@@ -170,9 +187,15 @@ function scrollbar:update(dt)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: draw()
+	- desc: draws the object
+--]]---------------------------------------------------------
 function scrollbar:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -193,13 +216,20 @@ function scrollbar:draw()
 	
 end
 
+--[[---------------------------------------------------------
+	- func: mousepressed(x, y, button)
+	- desc: called when the player presses a mouse button
+--]]---------------------------------------------------------
 function scrollbar:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	local hover = self.hover
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == false then
+	if hover == false then
 		return
 	end
 	
@@ -208,8 +238,10 @@ function scrollbar:mousepressed(x, y, button)
 	if baseparent.type == "frame" then
 		baseparent:MakeTop()
 	end
-		
-	if self.dragging == false then
+	
+	local dragging = self.dragging
+	
+	if dragging == false then
 		
 		if button == "l" then
 		
@@ -226,9 +258,15 @@ function scrollbar:mousepressed(x, y, button)
 
 end
 
+--[[---------------------------------------------------------
+	- func: mousereleased(x, y, button)
+	- desc: called when the player releases a mouse button
+--]]---------------------------------------------------------
 function scrollbar:mousereleased(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -238,18 +276,30 @@ function scrollbar:mousereleased(x, y, button)
 
 end
 
+--[[---------------------------------------------------------
+	- func: SetMaxX(x)
+	- desc: sets the object's max x position
+--]]---------------------------------------------------------
 function scrollbar:SetMaxX(x)
 
 	self.maxx = x
 	
 end
 
+--[[---------------------------------------------------------
+	- func: SetMaxY(y)
+	- desc: sets the object's max y position
+--]]---------------------------------------------------------
 function scrollbar:SetMaxY(y)
 
 	self.maxy = y
 	
 end
 
+--[[---------------------------------------------------------
+	- func: Scroll(amount)
+	- desc: scrolls the object
+--]]---------------------------------------------------------
 function scrollbar:Scroll(amount)
 
 	local bartype = self.bartype

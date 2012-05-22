@@ -3,7 +3,7 @@
 	-- By Nikolai Resokav --
 --]]------------------------------------------------
 
--- panel class
+-- modalbackground class
 modalbackground = class("modalbackground", base)
 modalbackground:include(loveframes.templates.default)
 
@@ -36,13 +36,18 @@ end
 --]]---------------------------------------------------------
 function modalbackground:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
-	if self.object:IsActive() == false then
+	local object = self.object
+	
+	if object:IsActive() == false then
 		self:Remove()
 		loveframes.modalobject = false
 	end

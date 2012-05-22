@@ -6,6 +6,10 @@
 -- scrollbar class
 scrollarea = class("scrollarea", base)
 
+--[[---------------------------------------------------------
+	- func: initialize()
+	- desc: initializes the object
+--]]---------------------------------------------------------
 function scrollarea:initialize(parent, bartype)
 	
 	self.type			= "scroll-area"
@@ -23,10 +27,17 @@ function scrollarea:initialize(parent, bartype)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: update(deltatime)
+	- desc: updates the object
+--]]---------------------------------------------------------
 function scrollarea:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -39,49 +50,59 @@ function scrollarea:update(dt)
 	
 	self:CheckHover()
 	
-	if self.parent.internals[2] then
+	local parent = self.parent
+	local pinternals = parent.internals
+	local button = pinternals[2]
+	local bartype = self.bartype
+	local time = love.timer.getTime()
+	local x, y = love.mouse.getPosition()
+	local listo = parent.parent
+	local down = self.down
+	local scrolldelay = self.scrolldelay
+	local delayamount = self.delayamount
+	local internals = self.internals
+	local bar = internals[1]
+	local hover = self.hover
 	
-		if self.bartype == "vertical" then
+	if button then
+	
+		if bartype == "vertical" then
 			self.staticx	= 0
-			self.staticy	= self.parent.internals[2].height - 1
-			self.width 		= self.parent.width
-			self.height 	= self.parent.height - self.parent.internals[2].height*2 + 2
-		elseif self.bartype == "horizontal" then
-			self.staticx	= self.parent.internals[2].width - 1
+			self.staticy	= button.height - 1
+			self.width 		= parent.width
+			self.height 	= parent.height - button.height*2 + 2
+		elseif bartype == "horizontal" then
+			self.staticx	= button.width - 1
 			self.staticy	= 0
-			self.width 		= self.parent.width - self.parent.internals[2].width*2 + 2
-			self.height 	= self.parent.height
+			self.width 		= parent.width - button.width*2 + 2
+			self.height 	= parent.height
 		end
 		
 	end
 	
-	local time = love.timer.getTime()
-	local x, y = love.mouse.getPosition()
-	local listo = self.parent.parent
-	
-	if self.down == true then
-		if self.scrolldelay < time then
-			self.scrolldelay = time + self.delayamount
+	if down == true then
+		if scrolldelay < time then
+			self.scrolldelay = time + delayamount
 			if listo.display == "vertical" then
-				if y > self.internals[1].y then
-					self.internals[1]:Scroll(self.internals[1].height)
+				if y > bar.y then
+					bar:Scroll(bar.height)
 				else
-					self.internals[1]:Scroll(-self.internals[1].height)
+					bar:Scroll(-bar.height)
 				end
 			elseif listo.display == "horizontal" then
-				if x > self.internals[1].x then
-					self.internals[1]:Scroll(self.internals[1].width)
+				if x > bar.x then
+					bar:Scroll(bar.width)
 				else
-					self.internals[1]:Scroll(-self.internals[1].width)
+					bar:Scroll(-bar.width)
 				end
 			end
 		end
-		if self.hover == false then
+		if hover == false then
 			self.down = false
 		end
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:update(dt)
 	end
 	
@@ -91,11 +112,19 @@ function scrollarea:update(dt)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: draw()
+	- desc: draws the object
+--]]---------------------------------------------------------
 function scrollarea:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
+	
+	local internals = self.internals
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -112,56 +141,84 @@ function scrollarea:draw()
 		skin.DrawScrollArea(self)
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:draw()
 	end
 	
 end
 
+--[[---------------------------------------------------------
+	- func: mousepressed(x, y, button)
+	- desc: called when the player presses a mouse button
+--]]---------------------------------------------------------
 function scrollarea:mousepressed(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	local listo = self.parent.parent
 	local time = love.timer.getTime()
+	local internals = self.internals
+	local bar = internals[1]
+	local hover = self.hover
+	local delayamount = self.delayamount
 	
-	if self.hover == true and button == "l" then
+	if hover == true and button == "l" then
 		self.down = true
-		self.scrolldelay = time + self.delayamount + 0.5
+		self.scrolldelay = time + delayamount + 0.5
+		
+		local baseparent = self:GetBaseParent()
+		
+		if baseparent and baseparent.type == "frame" then
+			baseparent:MakeTop()
+		end
+			
 		if listo.display == "vertical" then
 			if y > self.internals[1].y then
-				self.internals[1]:Scroll(self.internals[1].height)
+				bar:Scroll(bar.height)
 			else
-				self.internals[1]:Scroll(-self.internals[1].height)
+				bar:Scroll(-bar.height)
 			end
 		elseif listo.display == "horizontal" then
-			if x > self.internals[1].x then
-				self.internals[1]:Scroll(self.internals[1].width)
+			if x > bar.x then
+				bar:Scroll(bar.width)
 			else
-				self.internals[1]:Scroll(-self.internals[1].width)
+				bar:Scroll(-bar.width)
 			end
 		end
+		
+		loveframes.hoverobject = self
+		
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousepressed(x, y, button)
 	end
 
 end
 
+--[[---------------------------------------------------------
+	- func: mousereleased(x, y, button)
+	- desc: called when the player releases a mouse button
+--]]---------------------------------------------------------
 function scrollarea:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
+	
+	local internals = self.internals
 	
 	if button == "l" then
 		self.down = false
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousereleased(x, y, button)
 	end
 

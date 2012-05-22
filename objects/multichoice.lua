@@ -33,8 +33,11 @@ end
 --]]---------------------------------------------------------
 function multichoice:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -59,7 +62,9 @@ end
 --]]---------------------------------------------------------
 function multichoice:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -86,11 +91,16 @@ end
 --]]---------------------------------------------------------
 function multichoice:mousepressed(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and self.haslist == false and button == "l" then
+	local hover = self.hover
+	local haslist = self.haslist
+	
+	if hover == true and haslist == false and button == "l" then
 	
 		local baseparent = self:GetBaseParent()
 	
@@ -112,7 +122,9 @@ end
 --]]---------------------------------------------------------
 function multichoice:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 
@@ -124,7 +136,8 @@ end
 --]]---------------------------------------------------------
 function multichoice:AddChoice(choice)
 
-	table.insert(self.choices, choice)
+	local choices = self.choices
+	table.insert(choices, choice)
 	
 end
 
@@ -145,7 +158,6 @@ end
 function multichoice:SelectChoice(choice)
 
 	self.choice = choice
-	
 	self.list:Close()
 	
 	if self.OnChoiceSelected then

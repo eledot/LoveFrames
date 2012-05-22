@@ -323,7 +323,7 @@ function loveframes.debug.ExamplesMenu()
 		panel1:SetSize(490, 115)
 		
 		local slider1 = loveframes.Create("slider", panel1)
-		slider1:SetPos(5, 5)
+		slider1:SetPos(5, 20)
 		slider1:SetWidth(480)
 		slider1:SetMinMax(0, 100)
 		slider1:SetText("Padding")
@@ -332,14 +332,38 @@ function loveframes.debug.ExamplesMenu()
 			list1:SetPadding(value)
 		end
 		
+		local text1 = loveframes.Create("text", panel1)
+		text1:SetPos(5, 5)
+		text1:SetFont(love.graphics.newFont(10))
+		text1:SetText(slider1:GetText())
+		
+		local text2 = loveframes.Create("text", panel1)
+		text2:SetFont(love.graphics.newFont(10))
+		text2.Update = function(object, dt)
+			object:SetPos(slider1:GetWidth() - object:GetWidth(), 5)
+			object:SetText(slider1:GetValue())
+		end
+		
 		local slider2 = loveframes.Create("slider", panel1)
-		slider2:SetPos(5, 45)
+		slider2:SetPos(5, 60)
 		slider2:SetWidth(480)
 		slider2:SetMinMax(0, 100)
 		slider2:SetText("Spacing")
 		slider2:SetDecimals(0)
 		slider2.OnValueChanged = function(object2, value)
 			list1:SetSpacing(value)
+		end
+		
+		local text3 = loveframes.Create("text", panel1)
+		text3:SetPos(5, 45)
+		text3:SetFont(love.graphics.newFont(10))
+		text3:SetText(slider2:GetText())
+		
+		local text4 = loveframes.Create("text", panel1)
+		text4:SetFont(love.graphics.newFont(10))
+		text4.Update = function(object, dt)
+			object:SetPos(slider2:GetWidth() - object:GetWidth(), 45)
+			object:SetText(slider2:GetValue())
 		end
 		
 		local button1 = loveframes.Create("button", panel1)
@@ -441,12 +465,25 @@ function loveframes.debug.ExamplesMenu()
 		end
 		
 		local slider1 = loveframes.Create("slider", frame1)
-		slider1:SetPos(5, 120)
+		slider1:SetPos(5, 135)
 		slider1:SetWidth(490)
 		slider1:SetText("Progressbar lerp rate")
 		slider1:SetMinMax(1, 50)
+		slider1:SetDecimals(0)
 		slider1.OnValueChanged = function(object2, value)
 			progressbar1:SetLerpRate(value)
+		end
+		
+		local text1 = loveframes.Create("text", frame1)
+		text1:SetPos(5, 120)
+		text1:SetText("Lerp Rate")
+		text1:SetFont(love.graphics.newFont(10))
+		
+		local text2 = loveframes.Create("text", frame1)
+		text2:SetFont(love.graphics.newFont(10))
+		text2.Update = function(object, dt)
+			object:SetPos(slider1:GetWidth() - object:GetWidth(), 120)
+			object:SetText(slider1:GetValue())
 		end
 		
 	end
@@ -461,13 +498,23 @@ function loveframes.debug.ExamplesMenu()
 	
 		local frame1 = loveframes.Create("frame")
 		frame1:SetName("Slider")
-		frame1:SetSize(300, 70)
+		frame1:SetSize(300, 275)
 		frame1:Center()
 		
 		local slider1 = loveframes.Create("slider", frame1)
 		slider1:SetPos(5, 30)
 		slider1:SetWidth(290)
 		slider1:SetMinMax(0, 100)
+		
+		local slider2 = loveframes.Create("slider", frame1)
+		slider2:SetPos(5, 60)
+		slider2:SetHeight(200)
+		slider2:SetMinMax(0, 100)
+		slider2:SetButtonSize(20, 10)
+		slider2:SetSlideType("vertical")
+		slider2.Update = function(object, dt)
+			object:CenterX()
+		end
 		
 	end
 	exampleslist:AddItem(sliderexample)

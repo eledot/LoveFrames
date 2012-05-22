@@ -27,11 +27,16 @@ end
 --]]---------------------------------------------------------
 function panel:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
+	
+	local children = self.children
 	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base and self.parent.type ~= "list" then
@@ -41,7 +46,7 @@ function panel:update(dt)
 	
 	self:CheckHover()
 
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:update(dt)
 	end
 	
@@ -57,9 +62,13 @@ end
 --]]---------------------------------------------------------
 function panel:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
+	
+	local children = self.children
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -77,7 +86,7 @@ function panel:draw()
 	end
 		
 	-- loop through the object's children and draw them
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:draw()
 	end
 	
@@ -89,11 +98,16 @@ end
 --]]---------------------------------------------------------
 function panel:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and button == "l" then
+	local children = self.children
+	local hover = self.hover
+	
+	if hover == true and button == "l" then
 	
 		local baseparent = self:GetBaseParent()
 	
@@ -103,7 +117,7 @@ function panel:mousepressed(x, y, button)
 		
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:mousepressed(x, y, button)
 	end
 	
@@ -115,11 +129,14 @@ end
 --]]---------------------------------------------------------
 function panel:mousereleased(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	
+	if visible == false then
 		return
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:mousereleased(x, y, button)
 	end
 	

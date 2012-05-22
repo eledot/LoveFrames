@@ -52,8 +52,11 @@ end
 --]]---------------------------------------------------------
 function columnlistheader:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -90,7 +93,9 @@ end
 --]]---------------------------------------------------------
 function columnlistheader:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	

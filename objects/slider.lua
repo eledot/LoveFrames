@@ -15,12 +15,12 @@ function slider:initialize()
 
 	self.type			= "slider"
 	self.text 			= "Slider"
-	self.width			= 200
-	self.height			= 35
+	self.slidetype		= "horizontal"
+	self.width			= 5
+	self.height			= 5
 	self.max			= 10
 	self.min			= 0
 	self.value			= 0
-	self.ycenter		= 25
 	self.decimals		= 5
 	self.internal		= false
 	self.internals		= {}
@@ -40,11 +40,17 @@ end
 --]]---------------------------------------------------------
 function slider:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
+	
+	local internals = self.internals
+	local sliderbutton = internals[1]
 	
 	self:CheckHover()
 	
@@ -52,6 +58,14 @@ function slider:update(dt)
 	if self.parent ~= loveframes.base then
 		self.x = self.parent.x + self.staticx
 		self.y = self.parent.y + self.staticy
+	end
+	
+	if sliderbutton then
+		if self.slidetype == "horizontal" then
+			self.height = sliderbutton.height
+		elseif self.slidetype == "vertical" then
+			self.width = sliderbutton.width
+		end
 	end
 	
 	-- update internals
@@ -71,9 +85,13 @@ end
 --]]---------------------------------------------------------
 function slider:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
+	
+	local internals = self.internals
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
@@ -91,7 +109,7 @@ function slider:draw()
 	end
 	
 	-- draw internals
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:draw()
 	end
 
@@ -103,25 +121,47 @@ end
 --]]---------------------------------------------------------
 function slider:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	if self.hover == true and button == "l" then
 		
-		local xpos = x - self.x
-		local button = self.internals[1]
-		local baseparent = self:GetBaseParent()
-	
-		if baseparent and baseparent.type == "frame" then
-			baseparent:MakeTop()
-		end
+		if self.slidetype == "horizontal" then
 		
-		button:MoveToX(xpos)
-		button.down = true
-		button.dragging = true
-		button.startx = button.staticx
-		button.clickx = x
+			local xpos = x - self.x
+			local button = self.internals[1]
+			local baseparent = self:GetBaseParent()
+		
+			if baseparent and baseparent.type == "frame" then
+				baseparent:MakeTop()
+			end
+			
+			button:MoveToX(xpos)
+			button.down = true
+			button.dragging = true
+			button.startx = button.staticx
+			button.clickx = x
+			
+		elseif self.slidetype == "vertical" then
+		
+			local ypos = y - self.y
+			local button = self.internals[1]
+			local baseparent = self:GetBaseParent()
+		
+			if baseparent and baseparent.type == "frame" then
+				baseparent:MakeTop()
+			end
+			
+			button:MoveToY(ypos)
+			button.down = true
+			button.dragging = true
+			button.starty = button.staticy
+			button.clicky = y
+			
+		end
 			
 	end
 			
@@ -130,22 +170,6 @@ function slider:mousepressed(x, y, button)
 		v:mousepressed(x, y, button)
 	end
 	
-end
-
---[[---------------------------------------------------------
-	- func: mousereleased(x, y, button)
-	- desc: called when the player releases a mouse button
---]]---------------------------------------------------------
-function slider:mousereleased(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-	
-	for k, v in ipairs(self.internals) do
-		v:mousereleased(x, y, button)
-	end
-
 end
 
 --[[---------------------------------------------------------
@@ -164,18 +188,22 @@ function slider:SetValue(value)
 	
 	local decimals = self.decimals
 	local newval = loveframes.util.Round(value, decimals)
+	local internals = self.internals
 	
 	-- set the new value
 	self.value = newval
 	
 	-- slider button object
-	local button = self.internals[1]
-	
-	-- new position for the slider button
-	local xpos = self.width * (( newval - self.min ) / (self.max - self.min))
+	local sliderbutton = internals[1]
 	
 	-- move the slider button to the new position
-	button:MoveToX(xpos)
+	if self.slidetype == "horizontal" then
+		local xpos = self.width * (( newval - self.min ) / (self.max - self.min))
+		sliderbutton:MoveToX(xpos)
+	elseif self.slidetype == "vertical" then
+		local ypos = self.height * (( newval - self.min ) / (self.max - self.min))
+		sliderbutton:MoveToY(ypos)
+	end
 	
 	-- call OnValueChanged
 	if self.OnValueChanged then
@@ -256,28 +284,6 @@ function slider:GetMinMax()
 end
 
 --[[---------------------------------------------------------
-	- func: SetButtonYCenter(y)
-	- desc: sets the object's y center for it's slider
-			button
---]]---------------------------------------------------------
-function slider:SetButtonYCenter(y)
-
-	self.ycenter = y
-	
-end
-
---[[---------------------------------------------------------
-	- func: GetButtonYCenter()
-	- desc: get's the object's y center of it's slider
-			button
---]]---------------------------------------------------------
-function slider:GetButtonYCenter()
-
-	return self.ycenter
-	
-end
-
---[[---------------------------------------------------------
 	- func: SetText(name)
 	- desc: sets the objects's text
 --]]---------------------------------------------------------
@@ -304,5 +310,48 @@ end
 function slider:SetDecimals(decimals)
 
 	self.decimals = decimals
+	
+end
+
+--[[---------------------------------------------------------
+	- func: SetButtonSize(width, height)
+	- desc: sets the objects's button size
+--]]---------------------------------------------------------
+function slider:SetButtonSize(width, height)
+	
+	local internals = self.internals
+	local sliderbutton = self.internals[1]
+	
+	if sliderbutton then
+		sliderbutton.width = width
+		sliderbutton.height = height
+	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: GetButtonSize()
+	- desc: gets the objects's button size
+--]]---------------------------------------------------------
+function slider:GetButtonSize()
+
+	local internals = self.internals
+	local sliderbutton = self.internals[1]
+	
+	if sliderbutton then
+		return sliderbutton.width, sliderbutton.height
+	else
+		return false
+	end
+	
+end
+
+--[[---------------------------------------------------------
+	- func: SetSlideType(slidetype)
+	- desc: sets the objects's slide type
+--]]---------------------------------------------------------
+function slider:SetSlideType(slidetype)
+
+	self.slidetype = slidetype
 	
 end

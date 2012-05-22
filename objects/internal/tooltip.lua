@@ -45,14 +45,19 @@ end
 --]]---------------------------------------------------------
 function tooltip:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
-	self.width = self.text.width + self.padding*2
-	self.height = self.text.height + self.padding*2
+	local text = self.text
+	
+	self.width = text.width + self.padding*2
+	self.height = text.height + self.padding*2
 	
 	local object = self.object
 	local draworder = self.draworder
@@ -82,7 +87,7 @@ function tooltip:update(dt)
 				self:MoveToTop()
 			end
 			
-			self.text:SetPos(self.padding, self.padding)
+			text:SetPos(self.padding, self.padding)
 			
 		end
 		
@@ -93,7 +98,7 @@ function tooltip:update(dt)
 		
 	end
 	
-	self.text:update(dt)
+	text:update(dt)
 	
 	if self.Update then
 		self.Update(self, dt)
@@ -107,12 +112,17 @@ end
 --]]---------------------------------------------------------
 function tooltip:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
+	
+	local show = self.show
+	local text = self.text
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -120,7 +130,7 @@ function tooltip:draw()
 	local selfskin = self.skin
 	local skin = loveframes.skins.available[selfskin] or loveframes.skins.available[index] or loveframes.skins.available[defaultskin]
 	
-	if self.show == true then
+	if show == true then
 	
 		if self.Draw ~= nil then
 			self.Draw(self)
@@ -128,34 +138,10 @@ function tooltip:draw()
 			skin.DrawToolTip(self)
 		end
 	
-		self.text:draw()
+		text:draw()
 		
 	end
 	
-end
-
---[[---------------------------------------------------------
-	- func: mousepressed(x, y, button)
-	- desc: called when the player presses a mouse button
---]]---------------------------------------------------------
-function tooltip:mousepressed(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-	
-end
-
---[[---------------------------------------------------------
-	- func: mousereleased(x, y, button)
-	- desc: called when the player releases a mouse button
---]]---------------------------------------------------------
-function tooltip:mousereleased(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-
 end
 
 --[[---------------------------------------------------------

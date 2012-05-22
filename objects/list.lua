@@ -40,11 +40,18 @@ end
 --]]---------------------------------------------------------
 function list:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
+	
+	local internals = self.internals
+	local children = self.children
+	local display = self.display
 	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base then
@@ -54,17 +61,17 @@ function list:update(dt)
 	
 	self:CheckHover()
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:update(dt)
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:update(dt)
 		v:SetClickBounds(self.x, self.y, self.width, self.height)
 		v.y = (v.parent.y + v.staticy) - self.offsety
 		v.x = (v.parent.x + v.staticx) - self.offsetx
 		
-		if self.display == "vertical" then
+		if display == "vertical" then
 			if v.lastheight ~= v.height then
 				self:CalculateSize()
 				self:RedoLayout()
@@ -85,13 +92,18 @@ end
 --]]---------------------------------------------------------
 function list:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
 
+	local internals = self.internals
+	local children = self.children
+	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
 	local defaultskin = loveframes.config["DEFAULTSKIN"]
@@ -109,7 +121,7 @@ function list:draw()
 	
 	love.graphics.setStencil(stencil)
 		
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		local col = loveframes.util.BoundingBox(self.x, v.x, self.y, v.y, self.width, v.width, self.height, v.height)
 		if col == true then
 			v:draw()
@@ -118,7 +130,7 @@ function list:draw()
 	
 	love.graphics.setStencil()
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:draw()
 	end
 	
@@ -134,13 +146,20 @@ end
 --]]---------------------------------------------------------
 function list:mousepressed(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	local toplist = self:IsTopList()
+	local hover = self.hover
+	local vbar = self.vbar
+	local hbar = self.hbar
+	local children = self.children
+	local internals = self.internals
 	
-	if self.hover == true and button == "l" then
+	if hover == true and button == "l" then
 		
 		local baseparent = self:GetBaseParent()
 	
@@ -150,7 +169,7 @@ function list:mousepressed(x, y, button)
 		
 	end
 	
-	if self.vbar == true or self.hbar == true then
+	if vbar == true or hbar == true then
 	
 		if toplist == true then
 	
@@ -166,32 +185,12 @@ function list:mousepressed(x, y, button)
 		
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousepressed(x, y, button)
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:mousepressed(x, y, button)
-	end
-
-end
-
---[[---------------------------------------------------------
-	- func: mousereleased(x, y, button)
-	- desc: called when the player releases a mouse button
---]]---------------------------------------------------------
-function list:mousereleased(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-	
-	for k, v in ipairs(self.internals) do
-		v:mousereleased(x, y, button)
-	end
-	
-	for k, v in ipairs(self.children) do
-		v:mousereleased(x, y, button)
 	end
 
 end
@@ -205,11 +204,13 @@ function list:AddItem(object)
 	if object.type == "frame" then
 		return
 	end
+
+	local children = self.children
 	
 	object:Remove()
 	object.parent = self
 	
-	table.insert(self.children, object)
+	table.insert(children, object)
 	
 	self:CalculateSize()
 	self:RedoLayout()
@@ -223,7 +224,6 @@ end
 function list:RemoveItem(object)
 
 	object:Remove()
-	
 	self:CalculateSize()
 	self:RedoLayout()
 	
@@ -245,6 +245,8 @@ function list:CalculateSize()
 	local display = self.display
 	local vbar = self.vbar
 	local hbar = self.hbar
+	local internals = self.internals
+	local children = self.children
 	
 	if display == "vertical" then
 	
@@ -254,13 +256,15 @@ function list:CalculateSize()
 		
 		self.itemheight = (itemheight - spacing) + padding
 		
-		if self.itemheight > height then
+		local itemheight = self.itemheight
 		
-			self.extra = self.itemheight - height
+		if itemheight > height then
+		
+			self.extra = itemheight - height
 			
 			if vbar == false then
 				local scrollbar = scrollbody:new(self, display)
-				table.insert(self.internals, scrollbar)
+				table.insert(internals, scrollbar)
 				self.vbar = true
 				self:GetScrollBar().autoscroll = self.autoscroll
 			end
@@ -268,7 +272,8 @@ function list:CalculateSize()
 		else
 			
 			if vbar == true then
-				self.internals[1]:Remove()
+				local bar = internals[1]
+				bar:Remove()
 				self.vbar = false
 				self.offsety = 0
 			end
@@ -277,19 +282,21 @@ function list:CalculateSize()
 		
 	elseif display == "horizontal" then
 		
-		for k, v in ipairs(self.children) do
+		for k, v in ipairs(children) do
 			itemwidth = itemwidth + v.width + spacing
 		end
 		
 		self.itemwidth = (itemwidth - spacing) + padding
 		
-		if self.itemwidth > width then
+		local itemwidth = self.itemwidth
+				
+		if itemwidth > width then
 		
-			self.extra = self.itemwidth - width
+			self.extra = itemwidth - width
 			
 			if hbar == false then
 				local scrollbar = scrollbody:new(self, display)
-				table.insert(self.internals, scrollbar)
+				table.insert(internals, scrollbar)
 				self.hbar = true
 				self:GetScrollBar().autoscroll = self.autoscroll
 			end
@@ -297,7 +304,8 @@ function list:CalculateSize()
 		else
 			
 			if hbar == true then
-				self.internals[1]:Remove()
+				local bar = internals[1]
+				bar:Remove()
 				self.hbar = false
 				self.offsetx = 0
 			end
@@ -390,6 +398,9 @@ end
 --]]---------------------------------------------------------
 function list:SetDisplayType(type)
 
+	local children = self.children
+	local numchildren = #children
+	
 	self.display = type
 	
 	self.internals = {}
@@ -398,7 +409,7 @@ function list:SetDisplayType(type)
 	self.offsetx = 0
 	self.offsety = 0
 	
-	if #self.children > 0 then
+	if numchildren > 0 then
 		self:CalculateSize()
 		self:RedoLayout()
 	end
@@ -421,9 +432,12 @@ end
 --]]---------------------------------------------------------
 function list:SetPadding(amount)
 
+	local children = self.children
+	local numchildren = #children
+	
 	self.padding = amount
 	
-	if #self.children > 0 then
+	if numchildren > 0 then
 		self:CalculateSize()
 		self:RedoLayout()
 	end
@@ -436,9 +450,12 @@ end
 --]]---------------------------------------------------------
 function list:SetSpacing(amount)
 
+	local children = self.children
+	local numchildren = #children
+	
 	self.spacing = amount
 	
-	if #self.children > 0 then
+	if numchildren > 0 then
 		self:CalculateSize()
 		self:RedoLayout()
 	end
@@ -464,7 +481,6 @@ end
 function list:SetWidth(width)
 
 	self.width = width
-	
 	self:CalculateSize()
 	self:RedoLayout()
 	
@@ -477,7 +493,6 @@ end
 function list:SetHeight(height)
 
 	self.height = height
-	
 	self:CalculateSize()
 	self:RedoLayout()
 	
@@ -491,7 +506,6 @@ function list:SetSize(width, height)
 
 	self.width = width
 	self.height = height
-	
 	self:CalculateSize()
 	self:RedoLayout()
 	
@@ -503,16 +517,14 @@ end
 --]]---------------------------------------------------------
 function list:GetScrollBar()
 
-	if self.vbar == true or self.hbar == true then
+	local vbar = self.vbar
+	local hbar = self.hbar
 	
+	if vbar == true or hbar == true then
 		local scrollbar = self.internals[1].internals[1].internals[1]
-		
 		return scrollbar
-		
 	else
-		
 		return false
-	
 	end
 	
 end

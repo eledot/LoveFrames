@@ -123,13 +123,11 @@ skin.controls.textinput_blinker_color				= {0, 0, 0, 255}
 -- slider
 skin.controls.slider_bar_color						= bordercolor
 skin.controls.slider_bar_outline_color				= {220, 220, 220, 255}
-skin.controls.slider_text_color						= {0, 0, 0, 255}
-skin.controls.slider_text_font						= smallfont
 
 -- checkbox
 skin.controls.checkbox_border_color					= bordercolor
 skin.controls.checkbox_body_color					= {255, 255, 255, 255}
-skin.controls.checkbox_check_color					= {0, 0, 0, 255}
+skin.controls.checkbox_check_color					= {128, 204, 255, 255}
 skin.controls.checkbox_text_color					= {0, 0, 0, 255}
 skin.controls.checkbox_text_font					= smallfont
 
@@ -540,21 +538,21 @@ function skin.DrawScrollBar(object)
 		love.graphics.setColor(unpack(skin.controls.scrollbar_body_down_color))
 		love.graphics.rectangle("fill", object:GetX() + 1, object:GetY() + 1, object:GetWidth() - 2, object:GetHeight() - 2)
 		gradientcolor = {skin.controls.scrollbar_body_down_color[1] - 20, skin.controls.scrollbar_body_down_color[2] - 20, skin.controls.scrollbar_body_down_color[3] - 20, 255}
-		skin.DrawGradient(object:GetX(), object:GetY() - 1, object:GetWidth(), object:GetHeight(), "up", gradientcolor)
+		skin.DrawGradient(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), "up", gradientcolor)
 		love.graphics.setColor(unpack(skin.controls.scrollbar_border_down_color))
 		skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	elseif object.hover == true then
 		love.graphics.setColor(unpack(skin.controls.scrollbar_body_hover_color))
 		love.graphics.rectangle("fill", object:GetX() + 1, object:GetY() + 1, object:GetWidth() - 2, object:GetHeight() - 2)
 		gradientcolor = {skin.controls.scrollbar_body_hover_color[1] - 20, skin.controls.scrollbar_body_hover_color[2] - 20, skin.controls.scrollbar_body_hover_color[3] - 20, 255}
-		skin.DrawGradient(object:GetX(), object:GetY() - 1, object:GetWidth(), object:GetHeight(), "up", gradientcolor)
+		skin.DrawGradient(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), "up", gradientcolor)
 		love.graphics.setColor(unpack(skin.controls.scrollbar_border_hover_color))
 		skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	else
 		love.graphics.setColor(unpack(skin.controls.scrollbar_body_nohover_color))
 		love.graphics.rectangle("fill", object:GetX() + 1, object:GetY() + 1, object:GetWidth() - 2, object:GetHeight() - 2)
 		gradientcolor = {skin.controls.scrollbar_body_nohover_color[1] - 20, skin.controls.scrollbar_body_nohover_color[2] - 20, skin.controls.scrollbar_body_nohover_color[3] - 20, 255}
-		skin.DrawGradient(object:GetX(), object:GetY() - 1, object:GetWidth(), object:GetHeight(), "up", gradientcolor)
+		skin.DrawGradient(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), "up", gradientcolor)
 		love.graphics.setColor(unpack(skin.controls.scrollbar_border_nohover_color))
 		skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight())
 	end
@@ -758,11 +756,14 @@ function skin.DrawMultiChoiceList(object)
 	
 end
 
-
+--[[---------------------------------------------------------
+	- func: DrawOverMultiChoiceList(object)
+	- desc: draws over the multi choice list object
+--]]---------------------------------------------------------
 function skin.DrawOverMultiChoiceList(object)
 
 	love.graphics.setColor(unpack(skin.controls.multichoicelist_border_color))
-	skin.OutlinedRectangle(object:GetX(), object:GetY(), object:GetWidth(), object:GetHeight(), true)
+	skin.OutlinedRectangle(object:GetX(), object:GetY() - 1, object:GetWidth(), object:GetHeight() + 1)
 	
 end
 
@@ -950,19 +951,23 @@ end
 --]]---------------------------------------------------------
 function skin.DrawSlider(object)
 	
-	love.graphics.setColor(unpack(skin.controls.slider_bar_outline_color))
-	love.graphics.rectangle("fill", object:GetX(), object:GetY() + object.ycenter - 5, object:GetWidth(), 10)
-	
-	love.graphics.setColor(unpack(skin.controls.slider_bar_color))
-	love.graphics.rectangle("fill", object:GetX() + 5, object:GetY() + object.ycenter - 0.5, object:GetWidth() - 10, 1)
-	
-	love.graphics.setFont(skin.controls.slider_text_font)
-	
-	love.graphics.setColor(unpack(skin.controls.slider_text_color))
-	love.graphics.print(object.text, object:GetX(), object:GetY())
-	
-	love.graphics.setColor(unpack(skin.controls.slider_text_color))
-	love.graphics.printf(object.value, object:GetX() + object:GetWidth(), object:GetY(), 0, "right")
+	if object.slidetype == "horizontal" then
+		
+		love.graphics.setColor(unpack(skin.controls.slider_bar_outline_color))
+		love.graphics.rectangle("fill", object:GetX(), object:GetY() + object:GetHeight()/2 - 5, object:GetWidth(), 10)
+		
+		love.graphics.setColor(unpack(skin.controls.slider_bar_color))
+		love.graphics.rectangle("fill", object:GetX() + 5, object:GetY() + object:GetHeight()/2, object:GetWidth() - 10, 1)
+		
+	elseif object.slidetype == "vertical" then
+		
+		love.graphics.setColor(unpack(skin.controls.slider_bar_outline_color))
+		love.graphics.rectangle("fill", object:GetX() + object:GetWidth()/2 - 5, object:GetY(), 10, object:GetHeight())
+		
+		love.graphics.setColor(unpack(skin.controls.slider_bar_color))
+		love.graphics.rectangle("fill", object:GetX() + object:GetWidth()/2, object:GetY() + 5, 1, object:GetHeight() - 10)
+		
+	end
 	
 end
 
@@ -1030,6 +1035,7 @@ function skin.DrawCheckBox(object)
 	local linesize = (1 * (object.boxwidth * 0.05))
 	local checked = object.checked
 	local height = font:getHeight()
+	local gradientcolor = {}
 	
 	love.graphics.setColor(unpack(skin.controls.checkbox_body_color))
 	love.graphics.rectangle("fill", object:GetX(), object:GetY(), object.boxwidth, object.boxheight)
@@ -1039,11 +1045,11 @@ function skin.DrawCheckBox(object)
 	
 	if checked == true then
 	
-		love.graphics.setLine(linesize, "smooth")
-		
 		love.graphics.setColor(unpack(skin.controls.checkbox_check_color))
-		love.graphics.line(object:GetX() + 5 + linesize, object:GetY() + 5 + linesize, object:GetX() + object.boxwidth - 5 - linesize, object:GetY() + object.boxheight - 5 - linesize)
-		love.graphics.line(object:GetX() + object.boxwidth - 5 - linesize, object:GetY() + 5 + linesize, object:GetX() + 5 + linesize, object:GetY() + object.boxheight - 5 - linesize)
+		love.graphics.rectangle("fill", object:GetX() + 4, object:GetY() + 4, object.boxwidth - 8, object.boxheight - 8)
+	
+		gradientcolor = {skin.controls.checkbox_check_color[1] - 20, skin.controls.checkbox_check_color[2] - 20, skin.controls.checkbox_check_color[3] - 20, 255}
+		skin.DrawGradient(object:GetX() + 4, object:GetY() + 4, object.boxwidth - 8, object.boxheight - 8, "up", gradientcolor)
 		
 	end
 	

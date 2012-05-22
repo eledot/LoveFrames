@@ -28,8 +28,11 @@ end
 --]]---------------------------------------------------------
 function image:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -52,7 +55,9 @@ end
 --]]---------------------------------------------------------
 function image:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -94,8 +99,8 @@ end
 	- func: SetColor(table)
 	- desc: sets the object's color 
 --]]---------------------------------------------------------
-function image:SetColor(t)
+function image:SetColor(data)
 
-	self.imagecolor = t
+	self.imagecolor = data
 	
 end

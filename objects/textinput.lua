@@ -46,13 +46,18 @@ end
 --]]---------------------------------------------------------
 function textinput:update(dt)
 
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
 	local time = love.timer.getTime()
+	local keydown = self.keydown
+	local unicode = self.unicode
 	
 	self:CheckHover()
 	
@@ -62,9 +67,9 @@ function textinput:update(dt)
 		self.y = self.parent.y + self.staticy
 	end
 	
-	if self.keydown ~= "none" then
+	if keydown ~= "none" then
 		if time > self.delay then
-			self:RunKey(self.keydown, self.unicode)
+			self:RunKey(keydown, unicode)
 			self.delay = time + 0.02
 		end
 	end
@@ -84,12 +89,20 @@ end
 --]]---------------------------------------------------------
 function textinput:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
+	
+	local font = self.font
+	local textcolor = self.textcolor
+	local text = self.text
+	local textx = self.textx
+	local texty = self.texty
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -107,9 +120,9 @@ function textinput:draw()
 		skin.DrawTextInput(self)
 	end
 	
-	love.graphics.setFont(self.font)
-	love.graphics.setColor(unpack(self.textcolor))
-	love.graphics.print(self.text, self.textx, self.texty)
+	love.graphics.setFont(font)
+	love.graphics.setColor(unpack(textcolor))
+	love.graphics.print(text, textx, self.texty)
 	
 	love.graphics.setStencil()
 	
@@ -125,7 +138,9 @@ end
 --]]---------------------------------------------------------
 function textinput:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -133,7 +148,9 @@ function textinput:mousepressed(x, y, button)
 		return
 	end
 	
-	if self.hover == true then
+	local hover = self.hover
+	
+	if hover == true then
 	
 		local baseparent = self:GetBaseParent()
 	
@@ -159,7 +176,9 @@ end
 --]]---------------------------------------------------------
 function textinput:mousereleased(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -175,13 +194,16 @@ end
 --]]---------------------------------------------------------
 function textinput:keypressed(key, unicode)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	self.delay = love.timer.getTime() + 0.80
-	self.keydown = key
+	local time = love.timer.getTime()
 	
+	self.delay = time + 0.80
+	self.keydown = key
 	self:RunKey(key, unicode)
 	
 end
@@ -192,7 +214,9 @@ end
 --]]---------------------------------------------------------
 function textinput:keyreleased(key)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -205,17 +229,11 @@ end
 	- desc: runs a key event on the object
 --]]---------------------------------------------------------
 function textinput:RunKey(key, unicode)
-
-	local text = self.text
-	local ckey = ""
-	local font = self.font
-	local swidth = self.width
-	local twidth = font:getWidth(self.text)
-	local textxoffset = self.textxoffset
 	
-	self.unicode = unicode
+	local visible = self.visible
+	local focus = self.focus
 	
-	if self.visible == false then
+	if visible == false then
 		return
 	end
 	
@@ -223,28 +241,39 @@ function textinput:RunKey(key, unicode)
 		return
 	end
 	
+	local text = self.text
+	local ckey = ""
+	local font = self.font
+	local swidth = self.width
+	local twidth = font:getWidth(self.text)
+	local textxoffset = self.textxoffset
+	local blinkx = self.blinkx
+	local blinknum = self.blinknum
+	
+	self.unicode = unicode
+	
 	if key == "left" then
 		self:MoveBlinker(-1)
-		if self.blinkx <= self.x  and self.blinknum ~= 0 then
-			local width = self.font:getWidth(self.text:sub(self.blinknum, self.blinknum + 1))
+		if blinkx <= self.x  and blinknum ~= 0 then
+			local width = self.font:getWidth(self.text:sub(blinknum, blinknum + 1))
 			self.xoffset = self.xoffset + width
-		elseif self.blinknum == 0 and self.xoffset ~= 0 then
+		elseif blinknum == 0 and self.xoffset ~= 0 then
 			self.xoffset = 0
 		end
 	elseif key == "right" then
 		self:MoveBlinker(1)
-		if self.blinkx >= self.x + self.width and self.blinknum ~= #self.text then
-			local width = self.font:getWidth(self.text:sub(self.blinknum, self.blinknum))
+		if blinkx >= self.x + swidth and blinknum ~= #self.text then
+			local width = self.font:getWidth(self.text:sub(blinknum, blinknum))
 			self.xoffset = self.xoffset - width
-		elseif self.blinknum == #self.text and self.xoffset ~= ((0 - font:getWidth(self.text)) + self.width) then
-			self.xoffset = ((0 - font:getWidth(self.text)) + self.width)
+		elseif blinknum == #self.text and self.xoffset ~= ((0 - font:getWidth(self.text)) + swidth) then
+			self.xoffset = ((0 - font:getWidth(self.text)) + swidth)
 		end
 	end
 	
 	-- key input checking system
 	if key == "backspace" then
 		if text ~= "" then
-			self.text = self:RemoveFromeText(self.blinknum)
+			self.text = self:RemoveFromeText(blinknum)
 			self:MoveBlinker(-1)
 		end
 	elseif key == "return" then
@@ -254,8 +283,8 @@ function textinput:RunKey(key, unicode)
 	else
 		if unicode > 31 and unicode < 127 then
 			ckey = string.char(unicode)
-			if self.blinknum ~= 0 and self.blinknum ~= #self.text then
-				self.text = self:AddIntoText(unicode, self.blinknum)
+			if blinknum ~= 0 and blinknum ~= #self.text then
+				self.text = self:AddIntoText(unicode, blinknum)
 				self:MoveBlinker(1)
 			else
 				self.text = text .. ckey
@@ -313,12 +342,15 @@ end
 function textinput:RunBlink()
 
 	local time = love.timer.getTime()
+	local blink = self.blink
+	local blinknum = self.blinknum
+	local text = self.text
 	
 	if self.xoffset > 0 then
 		self.xoffset = 0
 	end
 	
-	if self.blink < time then
+	if blink < time then
 		if self.showblink == true then
 			self.showblink = false
 		else
@@ -329,8 +361,8 @@ function textinput:RunBlink()
 	
 	local width = 0
 	
-	for i=1, self.blinknum do
-		width = width + self.font:getWidth(self.text:sub(i, i))
+	for i=1, blinknum do
+		width = width + self.font:getWidth(text:sub(i, i))
 	end
 	
 	self.blinkx = self.textx + width
@@ -352,8 +384,6 @@ function textinput:AddIntoText(t, p)
 	
 	return new
 	
-	--print(part1, part2)
-	
 end
 
 --[[---------------------------------------------------------
@@ -363,15 +393,18 @@ end
 --]]---------------------------------------------------------
 function textinput:RemoveFromeText(p)
 
-	if self.blinknum ~= 0 then
-		local s = self.text
+	local blinknum = self.blinknum
+	local text = self.text
+	
+	if blinknum ~= 0 then
+		local s = text
 		local part1 = s:sub(1, p - 1)
 		local part2 = s:sub(p + 1)
 		local new = part1 .. part2
 		return new
 	end
 	
-	return self.text
+	return text
 	
 end
 

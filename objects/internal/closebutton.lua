@@ -29,23 +29,30 @@ end
 --]]---------------------------------------------------------
 function closebutton:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
 	
 	self:CheckHover()
 	
-	if self.hover == false then
+	local hover = self.hover
+	local down = self.down
+	local hoverobject = loveframes.hoverobject
+	
+	if hover == false then
 		self.down = false
-	elseif self.hover == true then
+	elseif hover == true then
 		if loveframes.hoverobject == self then
 			self.down = true
 		end
 	end
 	
-	if self.down == false and loveframes.hoverobject == self then
+	if down == false and hoverobject == self then
 		self.hover = true
 	end
 	
@@ -67,7 +74,9 @@ end
 --]]---------------------------------------------------------
 function closebutton:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -94,11 +103,15 @@ end
 --]]---------------------------------------------------------
 function closebutton:mousepressed(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and button == "l" then
+	local hover = self.hover
+	
+	if hover == true and button == "l" then
 	
 		local baseparent = self:GetBaseParent()
 	
@@ -119,11 +132,15 @@ end
 --]]---------------------------------------------------------
 function closebutton:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and self.down == true then
+	local hover = self.hover
+	
+	if hover == true and self.down == true then
 	
 		if button == "l" then
 			self.OnClick(x, y, self)

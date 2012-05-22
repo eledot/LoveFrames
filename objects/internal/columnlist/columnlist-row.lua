@@ -16,7 +16,7 @@ function columnlistrow:initialize(parent, data)
 	self.type 			= "columnlistrow"
 	self.parent			= parent
 	self.colorindex		= self.parent.rowcolorindex
-	self.font			= love.graphics.newFont(12)
+	self.font			= love.graphics.newFont(10)
 	self.textcolor		= {0, 0, 0, 255}
 	self.width 			= 80
 	self.height 		= 25
@@ -33,8 +33,11 @@ end
 --]]---------------------------------------------------------
 function columnlistrow:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -59,7 +62,9 @@ end
 --]]---------------------------------------------------------
 function columnlistrow:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -83,6 +88,7 @@ function columnlistrow:draw()
 	local textcolor = self.textcolor
 	
 	for k, v in ipairs(self.columndata) do
+		love.graphics.setFont(self.font)
 		love.graphics.setColor(unpack(textcolor))
 		love.graphics.print(v, self.x + x, self.y + self.texty)
 		x = x + cwidth

@@ -38,6 +38,15 @@ end
 --]]---------------------------------------------------------
 function tabs:update(dt)
 	
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
+			return
+		end
+	end
+	
 	local x, y = love.mouse.getPosition()
 	local tabheight = self.tabheight
 	local padding = self.padding
@@ -45,12 +54,10 @@ function tabs:update(dt)
 	local tabheight = self.tabheight
 	local padding = self.padding
 	local autosize = self.autosize
-	
-	if self.visible == false then
-		if self.alwaysupdate == false then
-			return
-		end
-	end
+	local children = self.children
+	local numchildren = #children
+	local internals = self.internals
+	local tab = self.tab
 	
 	-- move to parent if there is a parent
 	if self.parent ~= loveframes.base then
@@ -60,13 +67,13 @@ function tabs:update(dt)
 	
 	self:CheckHover()
 	
-	if #self.children > 0 and self.tab == 0 then
+	if numchildren > 0 and tab == 0 then
 		self.tab = 1
 	end
 	
 	local pos = 0
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:update(dt)
 		if v.type == "tabbutton" then
 			v.y = (v.parent.y + v.staticy)
@@ -75,7 +82,7 @@ function tabs:update(dt)
 		end
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:update(dt)
 		v:SetPos(padding, tabheight + padding)
 	end
@@ -92,9 +99,13 @@ end
 --]]---------------------------------------------------------
 function tabs:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
+	
+	local internals = self.internals
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
@@ -117,7 +128,7 @@ function tabs:draw()
 	
 	love.graphics.setStencil(stencil)
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:draw()
 	end
 	
@@ -135,11 +146,20 @@ end
 --]]---------------------------------------------------------
 function tabs:mousepressed(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true then
+	local children = self.children
+	local numchildren = #children
+	local tab = self.tab
+	local internals = self.internals
+	local numinternals = #internals
+	local hover = self.hover
+	
+	if hover == true then
 	
 		if button == "l" then
 		
@@ -157,7 +177,7 @@ function tabs:mousepressed(x, y, button)
 		
 		local buttonheight = self:GetHeightOfButtons()
 		local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, buttonheight, 1)
-		local visible = self.internals[#self.internals - 1]:GetVisible()
+		local visible = internals[numinternals - 1]:GetVisible()
 			
 		if col == true and visible == true then
 			self.offsetx = self.offsetx + 5
@@ -172,24 +192,25 @@ function tabs:mousepressed(x, y, button)
 		
 		local buttonheight = self:GetHeightOfButtons()
 		local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, buttonheight, 1)
-		local visible = self.internals[#self.internals]:GetVisible()
+		local visible = internals[numinternals]:GetVisible()
 			
 		if col == true and visible == true then
-			self.offsetx = self.offsetx - 5
 			local bwidth = self:GetWidthOfButtons()
 			if (self.offsetx + bwidth) < self.width then
 				self.offsetx = bwidth - self.width
+			else
+				self.offsetx = self.offsetx - 5
 			end
 		end
 			
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousepressed(x, y, button)
 	end
 	
-	if #self.children > 0 then
-		self.children[self.tab]:mousepressed(x, y, button)
+	if numchildren > 0 then
+		children[tab]:mousepressed(x, y, button)
 	end
 	
 end
@@ -200,16 +221,22 @@ end
 --]]---------------------------------------------------------
 function tabs:mousereleased(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	local numchildren = #children
+	local tab = self.tab
+	local internals = self.internals
+	
+	if visible == false then
 		return
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousereleased(x, y, button)
 	end
 	
-	if #self.children > 0 then
-		self.children[self.tab]:mousereleased(x, y, button)
+	if numchildren > 0 then
+		children[tab]:mousereleased(x, y, button)
 	end
 	
 end
@@ -223,6 +250,9 @@ function tabs:AddTab(name, object, tip, image)
 	local tabheight = self.tabheight
 	local padding = self.padding
 	local autosize = self.autosize
+	local retainsize = object.retainsize
+	local tabnumber = self.tabnumber
+	local internals = self.internals
 	
 	object:Remove()
 	object.parent = self
@@ -232,18 +262,18 @@ function tabs:AddTab(name, object, tip, image)
 	object:SetHeight(self.height - 35)
 	
 	table.insert(self.children, object)
-	self.internals[self.tabnumber] = tabbutton:new(self, name, self.tabnumber, tip, image)
-	self.internals[self.tabnumber].height = self.tabheight
-	self.tabnumber = self.tabnumber + 1
+	internals[tabnumber] = tabbutton:new(self, name, tabnumber, tip, image)
+	internals[tabnumber].height = self.tabheight
+	self.tabnumber = tabnumber + 1
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		self:SwitchToTab(k)
 		break
 	end
 	
 	self:AddScrollButtons()
 	
-	if autosize == true and object.retainsize == false then
+	if autosize == true and retainsize == false then
 		object:SetSize(self.width - padding*2, (self.height - tabheight) - padding*2)
 	end
 		
@@ -256,9 +286,11 @@ end
 --]]---------------------------------------------------------
 function tabs:AddScrollButtons()
 
-	for k, v in ipairs(self.internals) do
+	local internals = self.internals
+	
+	for k, v in ipairs(internals) do
 		if v.type == "scrollbutton" then
-			table.remove(self.internals, k)
+			table.remove(internals, k)
 		end
 	end
 	
@@ -305,8 +337,8 @@ function tabs:AddScrollButtons()
 		end
 	end
 	
-	table.insert(self.internals, leftbutton)
-	table.insert(self.internals, rightbutton)
+	table.insert(internals, leftbutton)
+	table.insert(internals, rightbutton)
 
 end
 
@@ -317,8 +349,9 @@ end
 function tabs:GetWidthOfButtons()
 
 	local width = 0
+	local internals = self.internals
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		if v.type == "tabbutton" then
 			width = width + v.width
 		end
@@ -344,12 +377,14 @@ end
 --]]---------------------------------------------------------
 function tabs:SwitchToTab(tabnumber)
 	
-	for k, v in ipairs(self.children) do
+	local children = self.children
+	
+	for k, v in ipairs(children) do
 		v.visible = false
 	end
 	
 	self.tab = tabnumber
-	self.children[self.tab].visible = true
+	self.children[tabnumber].visible = true
 	
 end
 
@@ -359,12 +394,12 @@ end
 --]]---------------------------------------------------------
 function tabs:SetScrollButtonSize(width, height)
 
-	for k, v in ipairs(self.internals) do
-		
+	local internals = self.internals
+	
+	for k, v in ipairs(internals) do
 		if v.type == "scrollbutton" then
 			v:SetSize(width, height)
 		end
-		
 	end
 	
 end
@@ -395,14 +430,14 @@ end
 --]]---------------------------------------------------------
 function tabs:SetTabHeight(height)
 
+	local internals = self.internals
+	
 	self.tabheight = height
 	
-	for k, v in ipairs(self.internals) do
-		
+	for k, v in ipairs(internals) do
 		if v.type == "tabbutton" then
 			v:SetHeight(self.tabheight)
 		end
-		
 	end
 	
 end
@@ -413,12 +448,12 @@ end
 --]]---------------------------------------------------------
 function tabs:SetToolTipFont(font)
 
-	for k, v in ipairs(self.internals) do
-		
+	local internals = self.internals
+	
+	for k, v in ipairs(internals) do
 		if v.type == "tabbutton" and v.tooltip then
 			v.tooltip:SetFont(font)
 		end
-		
 	end
 	
 end

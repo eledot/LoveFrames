@@ -33,11 +33,18 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
+	
+	local open = self.open
+	local children = self.children
+	local curobject = children[1]
 	
 	self:CheckHover()
 	
@@ -47,13 +54,11 @@ function collapsiblecategory:update(dt)
 		self.y = self.parent.y + self.staticy
 	end
 	
-	if self.open == true then
-		for k, v in ipairs(self.children) do
-			v:update(dt)
-			v:SetWidth(self.width - self.padding*2)
-			v.y = (v.parent.y + v.staticy)
-			v.x = (v.parent.x + v.staticx)
-		end
+	if open == true then
+		curobject:update(dt)
+		curobject:SetWidth(self.width - self.padding*2)
+		curobject.y = (curobject.parent.y + curobject.staticy)
+		curobject.x = (curobject.parent.x + curobject.staticx)
 	end
 	
 	if self.Update then
@@ -68,12 +73,15 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:draw()
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	loveframes.drawcount = loveframes.drawcount + 1
-	self.draworder = loveframes.drawcount
+	local open = self.open
+	local children = self.children
+	local curobject = children[1]
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -81,16 +89,17 @@ function collapsiblecategory:draw()
 	local selfskin = self.skin
 	local skin = loveframes.skins.available[selfskin] or loveframes.skins.available[index] or loveframes.skins.available[defaultskin]
 	
+	loveframes.drawcount = loveframes.drawcount + 1
+	self.draworder = loveframes.drawcount
+	
 	if self.Draw ~= nil then
 		self.Draw(self)
 	else
 		skin.DrawCollapsibleCategory(self)
 	end
 	
-	if self.open == true then
-		for k, v in ipairs(self.children) do
-			v:draw()
-		end
+	if open == true then
+		curobject:draw()
 	end
 	
 end
@@ -101,11 +110,18 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true then
+	local hover = self.hover
+	local open = self.open
+	local children = self.children
+	local curobject = children[1]
+	
+	if hover == true then
 	
 		local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, self.closedheight, 1)
 		
@@ -124,12 +140,8 @@ function collapsiblecategory:mousepressed(x, y, button)
 		
 	end
 	
-	if self.open == true then
-	
-		for k, v in ipairs(self.children) do
-			v:mousepressed(x, y, button)
-		end
-		
+	if open == true then
+		curobject:mousepressed(x, y, button)
 	end
 	
 end
@@ -140,7 +152,9 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
@@ -150,6 +164,8 @@ function collapsiblecategory:mousereleased(x, y, button)
 	local enabled = self.enabled
 	local open = self.open
 	local col = loveframes.util.BoundingBox(self.x, x, self.y, y, self.width, 1, self.closedheight, 1)
+	local children = self.children
+	local curobject = children[1]
 	
 	if hover == true and button == "l" and col == true and self.down == true then
 			
@@ -163,12 +179,8 @@ function collapsiblecategory:mousereleased(x, y, button)
 		
 	end
 	
-	if self.open == true then
-	
-		for k, v in ipairs(self.children) do
-			v:mousereleased(x, y, button)
-		end
-		
+	if open == true then
+		curobject:mousepressed(x, y, button)
 	end
 
 end
@@ -199,8 +211,11 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:SetObject(object)
 	
-	if self.children[1] then
-		self.children[1]:Remove()
+	local children = self.children
+	local curobject = children[1]
+	
+	if curobject then
+		curobject:Remove()
 		self.children = {}
 	end
 	
@@ -219,8 +234,11 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:GetObject()
 
-	if self.children[1] then
-		return self.children[1]
+	local children = self.children
+	local curobject = children[1]
+	
+	if curobject then
+		return curobject
 	else
 		return false
 	end
@@ -273,17 +291,20 @@ end
 --]]---------------------------------------------------------
 function collapsiblecategory:SetOpen(bool)
 
+	local children = self.children
+	local curobject = children[1]
+	
 	self.open = bool
 	
 	if bool == false then
 		self.height = self.closedheight
-		if self.children[1] then
-			self.children[1]:SetVisible(false)
+		if curobject then
+			curobject:SetVisible(false)
 		end
 	else
-		self.height = self.closedheight + self.padding*2 + self.children[1].height
-		if self.children[1] then
-			self.children[1]:SetVisible(true)
+		self.height = self.closedheight + self.padding*2 + curobject.height
+		if curobject then
+			curobject:SetVisible(true)
 		end
 	end
 			

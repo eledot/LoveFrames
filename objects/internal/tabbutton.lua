@@ -43,8 +43,11 @@ end
 --]]---------------------------------------------------------
 function tabbutton:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
@@ -108,12 +111,15 @@ end
 --]]---------------------------------------------------------
 function tabbutton:mousepressed(x, y, button)
 
+	local visible = self.visible
 	
-	if self.visible == false then
+	if visible == false then
 		return
 	end
 	
-	if self.hover == true and button == "l" then
+	local hover = self.hover
+	
+	if hover == true and button == "l" then
 		
 		local baseparent = self:GetBaseParent()
 	
@@ -134,16 +140,20 @@ end
 --]]---------------------------------------------------------
 function tabbutton:mousereleased(x, y, button)
 	
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
-	local pinternals = self.parent.internals
+	local hover = self.hover
+	local parent = self.parent
+	local tabnumber = self.tabnumber
 	
-	if self.hover == true and self.down == true then
+	if hover == true and button == "l" then
 	
 		if button == "l" then
-			self.parent:SwitchToTab(self.tabnumber)
+			parent:SwitchToTab(tabnumber)
 		end
 		
 	end

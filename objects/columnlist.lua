@@ -34,11 +34,17 @@ end
 --]]---------------------------------------------------------
 function columnlist:update(dt)
 	
-	if self.visible == false then
-		if self.alwaysupdate == false then
+	local visible = self.visible
+	local alwaysupdate = self.alwaysupdate
+	
+	if visible == false then
+		if alwaysupdate == false then
 			return
 		end
 	end
+	
+	local children = self.children
+	local internals = self.internals
 	
 	self:CheckHover()
 	
@@ -48,11 +54,11 @@ function columnlist:update(dt)
 		self.y = self.parent.y + self.staticy
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:update(dt)
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:update(dt)
 	end
 	
@@ -68,12 +74,17 @@ end
 --]]---------------------------------------------------------
 function columnlist:draw()
 
-	if self.visible == false then
+	local visible = self.visible
+	
+	if visible == false then
 		return
 	end
 	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
+	
+	local children = self.children
+	local internals = self.internals
 	
 	-- skin variables
 	local index	= loveframes.config["ACTIVESKIN"]
@@ -87,11 +98,11 @@ function columnlist:draw()
 		skin.DrawColumnList(self)
 	end
 	
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:draw()
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:draw()
 	end
 
@@ -103,7 +114,17 @@ end
 --]]---------------------------------------------------------
 function columnlist:mousepressed(x, y, button)
 
-	if self.hover == true and button == "l" then
+	local visible = self.visible
+	
+	if visible == false then
+		return
+	end
+	
+	local hover = self.hover
+	local children = self.children
+	local internals = self.internals
+	
+	if hover == true and button == "l" then
 	
 		local baseparent = self:GetBaseParent()
 	
@@ -113,11 +134,11 @@ function columnlist:mousepressed(x, y, button)
 		
 	end
 		
-	for k, v in ipairs(self.internals) do
+	for k, v in ipairs(internals) do
 		v:mousepressed(x, y, button)
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:mousepressed(x, y, button)
 	end
 	
@@ -129,44 +150,21 @@ end
 --]]---------------------------------------------------------
 function columnlist:mousereleased(x, y, button)
 
-	for k, v in ipairs(self.internals) do
+	local visible = self.visible
+	
+	if visible == false then
+		return
+	end
+	
+	local children = self.children
+	local internals = self.internals
+	
+	for k, v in ipairs(internals) do
 		v:mousereleased(x, y, button)
 	end
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:mousereleased(x, y, button)
-	end
-	
-end
-
---[[---------------------------------------------------------
-	- func: keypressed(key)
-	- desc: called when the player presses a key
---]]---------------------------------------------------------
-function columnlist:keypressed(key, unicode)
-
-	for k, v in ipairs(self.internals) do
-		v:keypressed(key, unicode)
-	end
-	
-	for k, v in ipairs(self.children) do
-		v:keypressed(key, unicode)
-	end
-	
-end
-
---[[---------------------------------------------------------
-	- func: keyreleased(key)
-	- desc: called when the player releases a key
---]]---------------------------------------------------------
-function columnlist:keyreleased(key)
-
-	for k, v in ipairs(self.internals) do
-		v:keyreleased(key)
-	end
-	
-	for k, v in ipairs(self.children) do
-		v:keyreleased(key)
 	end
 	
 end
@@ -208,11 +206,14 @@ end
 --]]---------------------------------------------------------
 function columnlist:AddColumn(name)
 
+	local internals = self.internals
+	local list = internals[1]
+	
 	columnlistheader:new(name, self)
 	self:AdjustColumns()
 	
-	self.internals[1]:SetSize(self.width, self.height)
-	self.internals[1]:SetPos(0, 0)
+	list:SetSize(self.width, self.height)
+	list:SetPos(0, 0)
 	
 end
 
@@ -222,7 +223,10 @@ end
 --]]---------------------------------------------------------
 function columnlist:AddRow(...)
 
-	self.internals[1]:AddRow(arg)
+	local internals = self.internals
+	local list = internals[1]
+	
+	list:AddRow(arg)
 	
 end
 
@@ -232,8 +236,14 @@ end
 --]]---------------------------------------------------------
 function columnlist:GetColumnSize()
 
-	if #self.children > 0 then
-		return self.children[1].width, self.children[1].height
+	local children = self.children
+	local numchildren = #self.children
+	local column = self.children[1]
+	local colwidth = column.width
+	local colheight = column.height
+	
+	if numchildren > 0 then
+		return colwidth, colheight
 	else
 		return 0, 0
 	end
@@ -246,11 +256,14 @@ end
 --]]---------------------------------------------------------
 function columnlist:SetSize(width, height)
 	
+	local internals = self.internals
+	local list = internals[1]
+	
 	self.width = width
 	self.height = height
 	
-	self.internals[1]:SetSize(width, height)
-	self.internals[1]:SetPos(0, 0)
+	list:SetSize(width, height)
+	list:SetPos(0, 0)
 	
 end
 
@@ -260,10 +273,13 @@ end
 --]]---------------------------------------------------------
 function columnlist:SetWidth(width)
 	
+	local internals = self.internals
+	local list = internals[1]
+	
 	self.width = width
 	
-	self.internals[1]:SetSize(width)
-	self.internals[1]:SetPos(0, 0)
+	list:SetSize(width)
+	list:SetPos(0, 0)
 	
 end
 
@@ -273,10 +289,13 @@ end
 --]]---------------------------------------------------------
 function columnlist:SetHeight(height)
 	
+	local internals = self.internals
+	local list = internals[1]
+	
 	self.height = height
 	
-	self.internals[1]:SetSize(height)
-	self.internals[1]:SetPos(0, 0)
+	list:SetSize(height)
+	list:SetPos(0, 0)
 	
 end
 
@@ -287,7 +306,10 @@ end
 --]]---------------------------------------------------------
 function columnlist:SetMaxColorIndex(num)
 
-	self.internals[1].colorindexmax = num
+	local internals = self.internals
+	local list = internals[1]
+	
+	list.colorindexmax = num
 	
 end
 
@@ -297,7 +319,10 @@ end
 --]]---------------------------------------------------------
 function columnlist:Clear()
 
-	self.internals[1]:Clear()
+	local internals = self.internals
+	local list = internals[1]
+	
+	list:Clear()
 	
 end
 
@@ -309,10 +334,15 @@ end
 --]]---------------------------------------------------------
 function columnlist:SetAutoScroll(bool)
 
+	local internals = self.internals
+	local list = internals[1]
+	
 	self.autoscroll = bool
 	
-	if self.internals[1]:GetScrollBar() ~= false then
-		self.internals[1]:GetScrollBar().autoscroll = bool
+	if list then
+		if list:GetScrollBar() ~= false then
+			list:GetScrollBar().autoscroll = bool
+		end
 	end
 	
 end

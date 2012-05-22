@@ -30,7 +30,9 @@ end
 --]]---------------------------------------------------------
 function base:update(dt)
 	
-	for k, v in ipairs(self.children) do
+	local children = self.children
+	
+	for k, v in ipairs(children) do
 		v:update(dt)
 	end
 
@@ -42,10 +44,12 @@ end
 --]]---------------------------------------------------------
 function base:draw()
 
+	local children = self.children
+	
 	loveframes.drawcount = loveframes.drawcount + 1
 	self.draworder = loveframes.drawcount
 	
-	for k, v in ipairs(self.children) do
+	for k, v in ipairs(children) do
 		v:draw()
 	end
 
@@ -57,18 +61,22 @@ end
 --]]---------------------------------------------------------
 function base:mousepressed(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	local internals = self.internals
+	
+	if visible == false then
 		return
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:mousepressed(x, y, button)
 		end
 	end
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:mousepressed(x, y, button)
 		end
 	end
@@ -81,18 +89,22 @@ end
 --]]---------------------------------------------------------
 function base:mousereleased(x, y, button)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	local internals = self.internals
+	
+	if visible == false then
 		return
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:mousereleased(x, y, button)
 		end
 	end
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:mousereleased(x, y, button)
 		end
 	end
@@ -105,18 +117,22 @@ end
 --]]---------------------------------------------------------
 function base:keypressed(key, unicode)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	local internals = self.internals
+	
+	if visible == false then
 		return
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:keypressed(key, unicode)
 		end
 	end
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:keypressed(key, unicode)
 		end
 	end
@@ -129,18 +145,22 @@ end
 --]]---------------------------------------------------------
 function base:keyreleased(key)
 
-	if self.visible == false then
+	local visible = self.visible
+	local children = self.children
+	local internals = self.internals
+	
+	if visible == false then
 		return
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:keyreleased(key)
 		end
 	end
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:keyreleased(key)
 		end
 	end
@@ -155,9 +175,10 @@ end
 --]]---------------------------------------------------------
 function base:SetPos(x, y)
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		self.x = x
 		self.y = y
 	else
@@ -173,9 +194,10 @@ end
 --]]---------------------------------------------------------
 function base:SetX(x)
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		self.x = x
 	else
 		self.staticx = x
@@ -189,9 +211,10 @@ end
 --]]---------------------------------------------------------
 function base:SetY(y)
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		self.y = y
 	else
 		self.staticy = y
@@ -266,9 +289,10 @@ end
 --]]---------------------------------------------------------
 function base:Center()
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		local width = love.graphics.getWidth()
 		local height = love.graphics.getHeight()
 		
@@ -290,9 +314,10 @@ end
 --]]---------------------------------------------------------
 function base:CenterX()
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		local width = love.graphics.getWidth()
 		self.x = width/2 - self.width/2
 	else
@@ -308,9 +333,10 @@ end
 --]]---------------------------------------------------------
 function base:CenterY()
 
+	local base = loveframes.base
 	local parent = self.parent
 	
-	if parent == loveframes.base then
+	if parent == base then
 		local height = love.graphics.getHeight()
 		self.y = height/2 - self.height/2
 	else
@@ -393,19 +419,15 @@ function base:SetVisible(bool)
 	self.visible = bool
 
 	if children then
-		
 		for k, v in ipairs(children) do
 			v:SetVisible(bool)
 		end
-		
 	end
 	
 	if internals then
-		
 		for k, v in ipairs(internals) do
 			v:SetVisible(bool)
 		end
-		
 	end
 	
 end
@@ -453,7 +475,6 @@ end
 function base:GetParent()
 
 	local parent = self.parent
-	
 	return parent
 	
 end
@@ -464,20 +485,27 @@ end
 --]]---------------------------------------------------------
 function base:Remove()
 	
-	if self.parent.internals then
+	local pinternals = self.parent.internals
+	local pchildren = self.parent.children
 	
-		for k, v in ipairs(self.parent.internals) do
+	if pinternals then
+	
+		for k, v in ipairs(pinternals) do
 			if v == self then
-				table.remove(self.parent.internals, k)
+				table.remove(pinternals, k)
 			end
 		end
 		
 	end
 	
-	for k, v in ipairs(self.parent.children) do
-		if v == self then
-			table.remove(self.parent.children, k)
+	if pchildren then
+	
+		for k, v in ipairs(pchildren) do
+			if v == self then
+				table.remove(pchildren, k)
+			end
 		end
+		
 	end
 	
 end
@@ -489,16 +517,19 @@ end
 --]]---------------------------------------------------------
 function base:SetClickBounds(x, y, width, height)
 
+	local internals = self.internals
+	local children = self.children
+	
 	self.clickbounds = {x = x, y = y, width = width, height = height}
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:SetClickBounds(x, y, width, height)
 		end
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:SetClickBounds(x, y, width, height)
 		end
 	end
@@ -523,16 +554,19 @@ end
 --]]---------------------------------------------------------
 function base:RemoveClickBounds()
 
+	local internals = self.internals
+	local children = self.children
+	
 	self.clickbounds = nil
 	
-	if self.internals then
-		for k, v in ipairs(self.internals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:RemoveClickBounds()
 		end
 	end
 	
-	if self.children then
-		for k, v in ipairs(self.children) do
+	if children then
+		for k, v in ipairs(children) do
 			v:RemoveClickBounds()
 		end
 	end
@@ -550,14 +584,10 @@ function base:InClickBounds()
 	local bounds = self.clickbounds
 	
 	if bounds then
-	
 		local col = loveframes.util.BoundingBox(x, bounds.x, y, bounds.y, 1, bounds.width, 1, bounds.height)
 		return col
-		
 	else
-		
 		return false
-	
 	end
 	
 end
@@ -575,11 +605,9 @@ function base:IsTopCollision()
 	
 	-- loop through the object's parent's children
 	for k, v in ipairs(cols) do
-		
 		if v.draworder > draworder then
 			top = false
-		end
-			
+		end	
 	end
 	
 	return top
@@ -593,11 +621,12 @@ end
 function base:GetBaseParent(t)
 	
 	local t = t or {}
-	local parent
+	local base = loveframes.base
+	local parent = self.parent
 	
-	if self.parent ~= loveframes.base then
-		table.insert(t, self.parent)
-		self.parent:GetBaseParent(t)
+	if parent ~= base then
+		table.insert(t, parent)
+		parent:GetBaseParent(t)
 	end
 	
 	return t[#t]
@@ -615,6 +644,7 @@ function base:CheckHover()
 	local selfcol = loveframes.util.BoundingBox(x, self.x, y, self.y, 1, self.width, 1, self.height)
 	local hoverobject = loveframes.hoverobject
 	local modalobject = loveframes.modalobject
+	local clickbounds = self.clickbounds
 	
 	-- is the mouse inside the object?
 	if selfcol == true then
@@ -635,7 +665,7 @@ function base:CheckHover()
 			self.hover = false
 		end
 	
-		if self.clickbounds then
+		if clickbounds then
 			if self:InClickBounds() == false then
 				self.hover = false
 			end
@@ -714,8 +744,10 @@ end
 --]]---------------------------------------------------------
 function base:GetChildren()
 
-	if self.children then
-		return self.children
+	local children = self.children
+	
+	if children then
+		return children
 	end
 	
 end
@@ -790,8 +822,10 @@ end
 --]]---------------------------------------------------------
 function base:MoveToTop()
 
+	local pchildren = self.parent.children
+	
 	self:Remove()
-	table.insert(self.parent.children, self)
+	table.insert(pchildren, self)
 	
 end
 
@@ -801,22 +835,21 @@ end
 --]]---------------------------------------------------------
 function base:SetSkin(name)
 
+	local pchildren = self.parent.children
+	local pinternals = self.parent.internals
+	
 	self.skin = name
 	
-	if self.children then
-	
-		for k, v in ipairs(self.children) do
+	if pchildren then
+		for k, v in ipairs(pchildren) do
 			v:SetSkin(name)
 		end
-		
 	end
 	
-	if self.internals then
-	
-		for k, v in ipairs(self.internals) do
+	if pinternals then
+		for k, v in ipairs(pinternals) do
 			v:SetSkin(name)
 		end
-		
 	end
 	
 end
@@ -881,9 +914,10 @@ end
 function base:IsActive()
 
 	local parent = self.parent
+	local pchildren = parent.children
 	local valid = false
 	
-	for k, v in ipairs(parent.children) do
+	for k, v in ipairs(pchildren) do
 		if v == self then
 			valid = true
 		end

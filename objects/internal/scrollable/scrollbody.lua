@@ -6,6 +6,10 @@
 -- scrollbar class
 scrollbody = class("scrollbody", base)
 
+--[[---------------------------------------------------------
+	- func: initialize()
+	- desc: initializes the object
+--]]---------------------------------------------------------
 function scrollbody:initialize(parent, bartype)
 	
 	self.type			= "scroll-body"
@@ -86,6 +90,10 @@ function scrollbody:initialize(parent, bartype)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: update(deltatime)
+	- desc: updates the object
+--]]---------------------------------------------------------
 function scrollbody:update(dt)
 	
 	if self.visible == false then
@@ -112,6 +120,10 @@ function scrollbody:update(dt)
 	
 end
 
+--[[---------------------------------------------------------
+	- func: draw()
+	- desc: draws the object
+--]]---------------------------------------------------------
 function scrollbody:draw()
 
 	if self.visible == false then
@@ -137,28 +149,4 @@ function scrollbody:draw()
 		v:draw()
 	end
 	
-end
-
-function scrollbody:mousepressed(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-	
-	for k, v in ipairs(self.internals) do
-		v:mousepressed(x, y, button)
-	end
-
-end
-
-function scrollbody:mousereleased(x, y, button)
-	
-	if self.visible == false then
-		return
-	end
-	
-	for k, v in ipairs(self.internals) do
-		v:mousereleased(x, y, button)
-	end
-
 end

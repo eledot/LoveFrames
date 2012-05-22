@@ -1,4 +1,26 @@
 ================================================
+Version 0.9.2 - Alpha (May 22 - 2012)
+================================================
+[ADDED] a new slider method: SetButtonSize(width, height)
+[ADDED] a new slider method: GetButtonSize()
+[ADDED] a new slider method: SetSlideType(slidetype)
+[ADDED] a new slider button method: MoveToY(y)
+
+[REMOVED] slider method: SetButtonYCenter(y)
+[REMOVED] slider method: GetButtonYCenter()
+
+[FIXED] the column list row object not setting it's text's font to it's font
+[FIXED] a small graient error in the default skins
+[FIXED] an error that caused tab buttons to be overscrolled with the middle mouse button
+[FIXED] the scroll area object not moving it's base parent to the top when clicked (only in situatuions where it'sbase parent was a frame)
+
+[CHANGED] sliders no longer use ycenter for button positioning
+[CHANGED] slider functionality, sliders can now be horizontal or vertical (use slider:SetSlideType("horizontal" or "vertical"))
+[CHANGED] lots of code for optimization and general cleanliness
+[CHANGED] a few minor things in the default skins
+[CHANGED] scrollbar hover behavior when being moved via it's scroll area being clicked (will no longer auto hover when it reaches the mouse position)
+
+================================================
 Version 0.9.1.6 - Alpha (May 17 - 2012)
 ================================================
 [ADDED] a new column list method: Clear()
