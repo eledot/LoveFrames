@@ -201,7 +201,7 @@ function slider:SetValue(value)
 		local xpos = self.width * (( newval - self.min ) / (self.max - self.min))
 		sliderbutton:MoveToX(xpos)
 	elseif self.slidetype == "vertical" then
-		local ypos = self.height * (( newval - self.min ) / (self.max - self.min))
+		local ypos = self.height - self.height * (( newval - self.min ) / (self.max - self.min))
 		sliderbutton:MoveToY(ypos)
 	end
 	
@@ -353,5 +353,9 @@ end
 function slider:SetSlideType(slidetype)
 
 	self.slidetype = slidetype
+	
+	if slidetype == "vertical" then
+		self:SetValue(self.min)
+	end
 	
 end

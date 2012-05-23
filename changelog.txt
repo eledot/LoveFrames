@@ -1,4 +1,11 @@
 ================================================
+Version 0.9.2.2 - Alpha (May 23 - 2012)
+================================================
+[FIXED] vertical slider value direction (top is now max value and bottom is 0)
+[FIXED] text flashing in the text input object when moving the text blinker to the right
+[FIXED] text blinker in the text input object not appearing in certain situations
+
+================================================
 Version 0.9.2 - Alpha (May 22 - 2012)
 ================================================
 [ADDED] a new slider method: SetButtonSize(width, height)

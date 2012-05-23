@@ -109,8 +109,11 @@ function sliderbutton:update(dt)
 			self.staticy = 0
 		end
 		
-		progress = loveframes.util.Round(self.staticy/(self.parent.height - self.height), 5)
-		nvalue = self.parent.min + (self.parent.max - self.parent.min) * progress
+		local space = self.parent.height - self.height
+		local remaining = (self.parent.height - self.height) - self.staticy
+		local percent =  loveframes.util.Round(remaining/space, 5)
+		
+		nvalue = self.parent.min + (self.parent.max - self.parent.min) * percent
 		pvalue = self.parent.value
 		
 	end
@@ -223,7 +226,7 @@ function sliderbutton:MoveToX(x)
 end
 
 --[[---------------------------------------------------------
-	- func: MoveToY(x)
+	- func: MoveToY(y)
 	- desc: moves the object to the specified y position
 --]]---------------------------------------------------------
 function sliderbutton:MoveToY(y)

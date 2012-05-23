@@ -264,8 +264,8 @@ function textinput:RunKey(key, unicode)
 		self:MoveBlinker(1)
 		if blinkx >= self.x + swidth and blinknum ~= #self.text then
 			local width = self.font:getWidth(self.text:sub(blinknum, blinknum))
-			self.xoffset = self.xoffset - width
-		elseif blinknum == #self.text and self.xoffset ~= ((0 - font:getWidth(self.text)) + swidth) then
+			self.xoffset = self.xoffset - width*2
+		elseif blinknum == #self.text and self.xoffset ~= ((0 - font:getWidth(self.text)) + swidth) and font:getWidth(self.text) + self.textxoffset > self.width then
 			self.xoffset = ((0 - font:getWidth(self.text)) + swidth)
 		end
 	end
