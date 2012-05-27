@@ -8,9 +8,9 @@ loveframes = {}
 
 -- library info
 loveframes.info = {}
-loveframes.info.author = "Nikolai Resokav"
-loveframes.info.version = "0.9.2.2"
-loveframes.info.stage = "Alpha"
+loveframes.info.author 	= "Nikolai Resokav"
+loveframes.info.version = "0.9.2.3"
+loveframes.info.stage 	= "Alpha"
 
 -- library configurations
 loveframes.config = {}
@@ -20,9 +20,9 @@ loveframes.config["ACTIVESKIN"]	   		= "Blue"
 loveframes.config["INDEXSKINIMAGES"]	= true
 loveframes.config["DEBUG"]				= true
 
-loveframes.drawcount = 0
-loveframes.hoverobject = false
-loveframes.modalobject = false
+loveframes.drawcount 	= 0
+loveframes.hoverobject 	= false
+loveframes.modalobject 	= false
 
 --[[---------------------------------------------------------
 	- func: load()

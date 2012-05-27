@@ -1,4 +1,11 @@
 ================================================
+Version 0.9.2.3 - Alpha (May 27 - 2012)
+================================================
+[FIXED] imagebutton.OnClick not working
+[FIXED] text being added into the text input object at incorrect positions when the value of textinput.blinknum was 0
+[FIXED] a bug that would cause an error when running SetVisible on a frame object when the value of frame.showclose was true
+
+================================================
 Version 0.9.2.2 - Alpha (May 23 - 2012)
 ================================================
 [FIXED] vertical slider value direction (top is now max value and bottom is 0)

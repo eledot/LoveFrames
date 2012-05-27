@@ -437,7 +437,7 @@ function frame:SetVisible(bool)
 	end
 
 	if self.showclose == true then
-		closebutton[1].visible = bool
+		closebutton.visible = bool
 	end
 	
 end

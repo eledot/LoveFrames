@@ -286,8 +286,11 @@ function textinput:RunKey(key, unicode)
 			if blinknum ~= 0 and blinknum ~= #self.text then
 				self.text = self:AddIntoText(unicode, blinknum)
 				self:MoveBlinker(1)
-			else
+			elseif blinknum == #self.text then
 				self.text = text .. ckey
+				self:MoveBlinker(1)
+			elseif blinknum == 0 then
+				self.text = self:AddIntoText(unicode, blinknum)
 				self:MoveBlinker(1)
 			end
 			

@@ -146,7 +146,7 @@ function imagebutton:mousereleased(x, y, button)
 	local clickable = self.clickable
 	local enabled = self.enabled
 	
-	if hover == true and down == true and imagebutton == "l" and clickable == true then
+	if hover == true and down == true and button == "l" and clickable == true then
 		if enabled == true then
 			if self.OnClick then
 				self.OnClick(self, x, y)
