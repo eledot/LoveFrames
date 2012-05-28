@@ -835,19 +835,19 @@ end
 --]]---------------------------------------------------------
 function base:SetSkin(name)
 
-	local pchildren = self.parent.children
-	local pinternals = self.parent.internals
+	local children = self.children
+	local internals = self.internals
 	
 	self.skin = name
 	
-	if pchildren then
-		for k, v in ipairs(pchildren) do
+	if children then
+		for k, v in ipairs(children) do
 			v:SetSkin(name)
 		end
 	end
 	
-	if pinternals then
-		for k, v in ipairs(pinternals) do
+	if internals then
+		for k, v in ipairs(internals) do
 			v:SetSkin(name)
 		end
 	end
