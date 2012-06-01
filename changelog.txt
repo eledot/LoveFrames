@@ -1,5 +1,11 @@
 ================================================
-Version 0.9.2.4 - Alpha (May 27 - 2012)
+Version 0.9.2.5 - Alpha (June 1 - 2012)
+================================================
+[FIXED] the text object not drawing numbers in certain situations
+[FIXED] a typo in the changelog
+
+================================================
+Version 0.9.2.4 - Alpha (May 29 - 2012)
 ================================================
 [FIXED] the SetSkin(skin) method causing a stack overflow
 

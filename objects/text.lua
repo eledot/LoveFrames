@@ -122,6 +122,10 @@ function text:SetText(t)
 		
 		if dtype == "table" then
 			prevcolor = v
+		elseif dtype == "number" then
+			
+			table.insert(self.text, {color = prevcolor, text = tostring(v)})
+			
 		elseif dtype == "string" then
 			
 			v = v:gsub(string.char(9), "    ")
